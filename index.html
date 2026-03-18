@@ -113,7 +113,7 @@ textarea:focus{border-color:var(--border-strong)}
 .divider{height:1px;background:var(--border);margin:14px 0}
 .section-title{font-size:10px;color:var(--text-subtle);margin-bottom:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
 .danger-btn{width:100%;padding:10px;background:transparent;border:1px solid var(--red-border);border-radius:var(--radius-sm);color:var(--red);font-size:12px;cursor:pointer;font-family:inherit;margin-top:4px;transition:all 0.15s;}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(9,9,11,0.88);border-top:1px solid var(--border);display:flex;padding:10px 0 14px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(9,9,11,0.96);border-top:1px solid rgba(255,255,255,0.12);display:flex;padding:10px 0 16px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);z-index:100;box-shadow:0 -1px 0 rgba(255,255,255,0.06),0 -8px 32px rgba(0,0,0,0.6);}
 .nav-btn{flex:1;background:transparent;border:none;cursor:pointer;padding:2px 0;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all 0.15s;}
 .nav-btn:active{transform:scale(0.88)}
 .nav-icon{font-size:18px;line-height:1;opacity:0.28;transition:opacity 0.15s}
@@ -122,8 +122,20 @@ textarea:focus{border-color:var(--border-strong)}
 .nav-btn.active .nav-label{color:var(--text)}
 #installBanner{display:none;margin:12px 16px 0;padding:11px 13px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:12px;color:var(--text-muted);align-items:center;gap:10px;backdrop-filter:blur(8px);}
 #installBanner button{background:var(--text);border:none;border-radius:6px;color:#09090b;font-size:11px;font-weight:700;padding:5px 11px;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.sleep-card{background:var(--surface);border:1px solid var(--blue-border);border-radius:var(--radius);padding:14px;backdrop-filter:blur(8px);}
+.sleep-row{display:flex;align-items:stretch;gap:0;margin-bottom:12px}
+.sleep-field{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.sleep-divider{width:1px;background:var(--border);margin:0 12px}
+.sleep-field-label{font-size:12px;color:var(--text-muted);font-weight:600}
+.sleep-input{background:rgba(255,255,255,0.05);border:1px solid var(--border-strong);border-radius:var(--radius-sm);color:var(--text);font-size:22px;font-weight:700;font-family:inherit;padding:6px 10px;outline:none;width:100%;text-align:center;direction:ltr;transition:border 0.2s;}
+.sleep-input:focus{border-color:rgba(255,255,255,0.3)}
+.sleep-field-sub{font-size:10px;color:var(--text-subtle);text-align:center}
+.sleep-duration{font-size:11px;color:var(--blue);text-align:center;padding:6px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:12px;min-height:28px;display:flex;align-items:center;justify-content:center;}
+.sleep-log-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sleep-log-label{font-size:12px;color:var(--text-muted)}
+.sleep-check-btn{font-size:11px;padding:5px 10px;border-radius:var(--radius-sm);border:1px solid var(--border-strong);background:transparent;color:var(--text-muted);cursor:pointer;font-family:inherit;transition:all 0.15s;white-space:nowrap;}
+.sleep-check-btn.done{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.25);color:var(--text);}
 input[type=file]{display:none}
-</style>
 </head>
 <body>
 
@@ -178,6 +190,34 @@ input[type=file]{display:none}
     <div class="agile-text">هر عادت رو جداگانه فعال کن. بعد از ۲۱ روز متوالی، تثبیتش کن و برو سراغ بعدی. یهو همه رو با هم شروع نکن.</div>
   </div>
   <div id="habitsContainer"></div>
+
+  <!-- SLEEP SCHEDULE -->
+  <div id="sleepSection" style="display:none;margin-bottom:20px">
+    <div class="phase-label" style="color:#60a5fa">فاز ۲ — تنظیم خواب</div>
+    <div class="sleep-card">
+      <div class="sleep-row">
+        <div class="sleep-field">
+          <div class="sleep-field-label">😴 خوابیدن</div>
+          <input type="time" id="sleepTime" class="sleep-input" onchange="saveSleepTime()">
+          <div class="sleep-field-sub" id="sleepSub">هدف تنظیم نشده</div>
+        </div>
+        <div class="sleep-divider"></div>
+        <div class="sleep-field">
+          <div class="sleep-field-label">🌅 بیدار شدن</div>
+          <input type="time" id="wakeTime" class="sleep-input" onchange="saveSleepTime()">
+          <div class="sleep-field-sub" id="wakeSub">هدف تنظیم نشده</div>
+        </div>
+      </div>
+      <div class="sleep-duration" id="sleepDuration"></div>
+      <div class="sleep-log-row">
+        <div class="sleep-log-label">امروز رعایت شد؟</div>
+        <div style="display:flex;gap:8px">
+          <button class="sleep-check-btn" id="btnSleepDone" onclick="toggleSleepLog('sleep')">خوابیدن ✓</button>
+          <button class="sleep-check-btn" id="btnWakeDone" onclick="toggleSleepLog('wakeup')">بیدار شدن ✓</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="note-label">📝 یادداشت امروز</div>
   <textarea id="noteArea" placeholder="هر چیزی که می‌خوای بنویس..." oninput="saveNote()"></textarea>
   <div class="alert-box">
@@ -244,8 +284,6 @@ const HDEFS=[
   {id:'pr5t',  icon:'⏰',label:'نماز عشاء — اول وقت',       ph:1,pc:'#c084fc'},
   {id:'wudu',  icon:'💧',label:'تجدید وضو — حداقل ۳ بار',   ph:1,pc:'#c084fc'},
   {id:'panahi',icon:'🎧',label:'پناهیان — حداقل ۱ جلسه',    ph:1,pc:'#c084fc'},
-  {id:'sleep', icon:'😴',label:'خوابیدن ساعت ثابت',         ph:2,pc:'#60a5fa'},
-  {id:'wakeup',icon:'🌅',label:'بیدار شدن ساعت ثابت',       ph:2,pc:'#60a5fa'},
   {id:'pushup',icon:'💪',label:'پوش‌آپ صبح — ۲۰ تکرار',     ph:2,pc:'#60a5fa'},
   {id:'walk',  icon:'🚶',label:'پیاده‌روی — حداقل ۱۵ دقیقه',ph:3,pc:'#34d399'},
 ];
@@ -327,14 +365,20 @@ function changePwd(){
   localStorage.setItem('ge_h',sh(np.trim()));alert('رمز تغییر کرد ✅');
 }
 
-function defStates(){const s={};HDEFS.forEach((h,i)=>{s[h.id]=i<2?'active':'locked';});return s;}
+function defStates(){const s={};HDEFS.forEach((h,i)=>{s[h.id]=i<2?'active':'locked';});s['sleep']='locked';s['wakeup']='locked';return s;}
 function ld(){
   try{const r=localStorage.getItem('ge_d4');if(r)return JSON.parse(r);}catch(e){}
-  return{startDate:tk(),logs:{},notes:{},states:defStates()};
+  return{startDate:tk(),logs:{},notes:{},states:defStates(),sleep:{}};
 }
 function sv(){try{localStorage.setItem('ge_d4',JSON.stringify(data));}catch(e){}}
 let data=ld();
-function es(){if(!data.states)data.states={};HDEFS.forEach((h,i)=>{if(!data.states[h.id])data.states[h.id]=i<2?'active':'locked';});}
+function es(){
+  if(!data.states)data.states={};
+  HDEFS.forEach((h,i)=>{if(!data.states[h.id])data.states[h.id]=i<2?'active':'locked';});
+  if(!data.states['sleep'])data.states['sleep']='locked';
+  if(!data.states['wakeup'])data.states['wakeup']='locked';
+  if(!data.sleep)data.sleep={};
+}
 
 function hStreak(id){
   let s=0;for(let i=0;i<365;i++){const d=new Date();d.setDate(d.getDate()-i);const log=data.logs[d.toISOString().split('T')[0]]||{};if(log[id])s++;else break;}return s;
@@ -347,7 +391,9 @@ function activeH(){return HDEFS.filter(h=>data.states[h.id]==='active');}
 function todayDone(){const log=data.logs[tk()]||{};return activeH().filter(h=>log[h.id]).length;}
 
 function updateHeader(){
-  const a=activeH().length,d=todayDone(),pct=a>0?Math.round((d/a)*100):0;
+  const a=activeH().length+activeSleepCount();
+  const d=getTodayDone()+sleepDoneCount();
+  const pct=a>0?Math.round((d/a)*100):0;
   document.getElementById('dayCount').textContent='روز '+fa(dayCount());
   document.getElementById('streakLabel').textContent=fa(gStreak())+' روز';
   document.getElementById('progressText').textContent=fa(d)+'/'+fa(a);
@@ -388,13 +434,97 @@ function renderHabits(){
         html+=`<div class="habit-item stable-h"><span class="habit-icon">${h.icon}</span><span class="habit-label">${h.label}</span><span class="stable-badge">تثبیت ✓</span><div class="habit-check"></div></div>`;
       }
     });
+    // inject sleep/wakeup into phase 2
+    if(+p===2){
+      const sleepSt=data.states['sleep']||'locked';
+      const wakeupSt=data.states['wakeup']||'locked';
+      if(sleepSt==='locked'){
+        html+=`<div class="habit-item locked"><span class="habit-icon">😴</span><span class="habit-label">خوابیدن ساعت ثابت</span><button class="activate-btn" onclick="activateSleep('sleep')">فعال کن</button></div>`;
+      }else if(sleepSt==='active'){
+        html+=`<div class="habit-item active-h"><span class="habit-icon">😴</span><span class="habit-label">خوابیدن ساعت ثابت</span><span class="stable-badge" style="background:rgba(96,165,250,0.1);color:var(--blue);border-color:var(--blue-border)">فعال ✓</span></div>`;
+      }else{
+        html+=`<div class="habit-item stable-h"><span class="habit-icon">😴</span><span class="habit-label">خوابیدن ساعت ثابت</span><span class="stable-badge">تثبیت ✓</span></div>`;
+      }
+      if(wakeupSt==='locked'){
+        html+=`<div class="habit-item locked"><span class="habit-icon">🌅</span><span class="habit-label">بیدار شدن ساعت ثابت</span><button class="activate-btn" onclick="activateSleep('wakeup')">فعال کن</button></div>`;
+      }else if(wakeupSt==='active'){
+        html+=`<div class="habit-item active-h"><span class="habit-icon">🌅</span><span class="habit-label">بیدار شدن ساعت ثابت</span><span class="stable-badge" style="background:rgba(96,165,250,0.1);color:var(--blue);border-color:var(--blue-border)">فعال ✓</span></div>`;
+      }else{
+        html+=`<div class="habit-item stable-h"><span class="habit-icon">🌅</span><span class="habit-label">بیدار شدن ساعت ثابت</span><span class="stable-badge">تثبیت ✓</span></div>`;
+      }
+    }
     html+='</div>';
   });
   document.getElementById('habitsContainer').innerHTML=html;
 }
+function activateSleep(id){
+  data.states[id]='active';
+  sv();renderHabits();renderSleepSection();updateHeader();
+}
 
 function saveNote(){data.notes[tk()]=document.getElementById('noteArea').value;sv();}
 function loadNote(){document.getElementById('noteArea').value=data.notes[tk()]||'';}
+
+// ── SLEEP ─────────────────────────────────────────────────
+function sleepActive(){
+  return data.states['sleep']==='active'||data.states['wakeup']==='active'||
+         data.states['sleep']==='stable'||data.states['wakeup']==='stable';
+}
+function calcDuration(s,w){
+  if(!s||!w) return '';
+  const [sh,sm]=s.split(':').map(Number);
+  const [wh,wm]=w.split(':').map(Number);
+  let mins=(wh*60+wm)-(sh*60+sm);
+  if(mins<=0) mins+=1440;
+  const h=Math.floor(mins/60),m=mins%60;
+  return `مدت خواب: ${fa(h)} ساعت${m>0?' و '+fa(m)+' دقیقه':''}`;
+}
+function saveSleepTime(){
+  const s=document.getElementById('sleepTime').value;
+  const w=document.getElementById('wakeTime').value;
+  if(!data.sleep) data.sleep={};
+  data.sleep.targetSleep=s;
+  data.sleep.targetWake=w;
+  sv(); renderSleepSection();
+}
+function toggleSleepLog(id){
+  const t=tk();
+  if(!data.logs[t]) data.logs[t]={};
+  data.logs[t][id]=!data.logs[t][id];
+  sv(); renderSleepSection(); updateHeader();
+}
+function renderSleepSection(){
+  if(!sleepActive()){
+    document.getElementById('sleepSection').style.display='none';
+    return;
+  }
+  document.getElementById('sleepSection').style.display='block';
+  const s=(data.sleep||{}).targetSleep||'';
+  const w=(data.sleep||{}).targetWake||'';
+  document.getElementById('sleepTime').value=s;
+  document.getElementById('wakeTime').value=w;
+  document.getElementById('sleepSub').textContent=s?`هدف: ${s}`:'هدف تنظیم نشده';
+  document.getElementById('wakeSub').textContent=w?`هدف: ${w}`:'هدف تنظیم نشده';
+  const dur=calcDuration(s,w);
+  document.getElementById('sleepDuration').textContent=dur||'ساعت خواب و بیداری را تنظیم کن';
+  const log=data.logs[tk()]||{};
+  document.getElementById('btnSleepDone').classList.toggle('done',!!log['sleep']);
+  document.getElementById('btnWakeDone').classList.toggle('done',!!log['wakeup']);
+}
+// inject sleep/wakeup into activeH count for header
+function activeSleepCount(){
+  let c=0;
+  if(data.states['sleep']==='active') c++;
+  if(data.states['wakeup']==='active') c++;
+  return c;
+}
+function sleepDoneCount(){
+  const log=data.logs[tk()]||{};
+  let c=0;
+  if(data.states['sleep']==='active'&&log['sleep']) c++;
+  if(data.states['wakeup']==='active'&&log['wakeup']) c++;
+  return c;
+}
 
 function renderHistory(){
   const today=tk();let html='';const a=activeH().length||1;
@@ -489,7 +619,7 @@ function installApp(){if(!dP)return;dP.prompt();dP.userChoice.then(()=>{dP=null;
 if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{});}
 
 function init(){
-  data=ld();es();updateHeader();renderHabits();loadNote();
+  data=ld();es();updateHeader();renderHabits();renderSleepSection();loadNote();
   document.getElementById('mantraBox').textContent='💡 '+MANTRAS[0];
   document.getElementById('mantraBox').style.direction=isRTL(MANTRAS[0])?'rtl':'ltr';
   document.getElementById('mantraBox').style.textAlign=isRTL(MANTRAS[0])?'right':'left';
