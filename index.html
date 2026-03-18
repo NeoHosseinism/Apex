@@ -177,16 +177,38 @@ textarea{
 }
 .bottom-nav{
   position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:480px;background:rgba(8,8,14,0.98);
-  border-top:1px solid rgba(150,80,255,0.11);display:flex;padding:8px 0;
+  width:100%;max-width:480px;
+  background:rgba(12,8,22,0.98);
+  border-top:1px solid rgba(150,80,255,0.2);
+  display:flex;padding:10px 0 12px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 -4px 24px rgba(0,0,0,0.4);
 }
 .nav-btn{
   flex:1;background:transparent;border:none;cursor:pointer;
-  padding:5px 0;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:4px 0;display:flex;flex-direction:column;align-items:center;gap:4px;
+  transition:all 0.2s;
 }
-.nav-icon{font-size:19px}
-.nav-label{font-size:10px;color:#3a2a5a}
-.nav-btn.active .nav-label{color:#c084fc}
+.nav-btn:active{transform:scale(0.92)}
+.nav-icon{
+  font-size:20px;line-height:1;
+  filter:grayscale(1) opacity(0.4);
+  transition:all 0.2s;
+}
+.nav-btn.active .nav-icon{filter:none;}
+.nav-label{
+  font-size:11px;font-weight:600;
+  font-family:'Vazirmatn','Tahoma',sans-serif;
+  color:rgba(150,100,210,0.4);
+  transition:all 0.2s;
+  letter-spacing:0.3px;
+}
+.nav-btn.active .nav-label{color:#c084fc;}
+.nav-btn.active{position:relative}
+.nav-btn.active::after{
+  content:'';position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);
+  width:32px;height:2px;background:#c084fc;border-radius:2px;
+}
 #installBanner{
   display:none;margin:10px 20px 0;padding:11px 13px;
   background:rgba(124,58,237,0.1);border:1px solid rgba(192,132,252,0.22);
@@ -356,7 +378,15 @@ const MANTRAS=[
   "هر روزی که پایدار موندی، یه مسیر عصبی جدید ساختی.",
   "اون نسخه طلایی یه توهم نبود. یه نسخه واقعی از توئه.",
 ];
-let mi=0;
+function isRTL(s){ return /[\u0600-\u06FF]/.test(s); }
+function showMantra(){
+  const el=document.getElementById('mantraBox');
+  if(!el) return;
+  const text=MANTRAS[mi];
+  el.textContent='💡 '+text;
+  el.style.direction=isRTL(text)?'rtl':'ltr';
+  el.style.textAlign=isRTL(text)?'right':'left';
+}
 
 function sh(s){let h=0;for(let i=0;i<s.length;i++)h=(Math.imul(31,h)+s.charCodeAt(i))|0;return String(h>>>0);}
 function initAuth(){
@@ -555,11 +585,13 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catc
 function init(){
   data=ld();es();updateHeader();renderHabits();loadNote();
   document.getElementById('mantraBox').textContent='💡 '+MANTRAS[0];
+  document.getElementById('mantraBox').style.direction=isRTL(MANTRAS[0])?'rtl':'ltr';
+  document.getElementById('mantraBox').style.textAlign=isRTL(MANTRAS[0])?'right':'left';
 }
 
 initAuth();
 if(sessionStorage.getItem('ge_a')==='1'&&localStorage.getItem('ge_h'))showApp();
-setInterval(()=>{mi=(mi+1)%MANTRAS.length;const el=document.getElementById('mantraBox');if(el)el.textContent='💡 '+MANTRAS[mi];},5000);
+setInterval(()=>{mi=(mi+1)%MANTRAS.length;showMantra();},5000);
 </script>
 </body>
 </html>
