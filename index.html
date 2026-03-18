@@ -6,7 +6,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#7c3aed">
-<title>برنامه روزانه</title>
+<title>Apex</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,19 +15,16 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{
   background:linear-gradient(135deg,#0a0a0f 0%,#120a1f 50%,#0a0a0f 100%);
-  color:#e8e0f0;
-  font-family:'Vazirmatn','Tahoma',sans-serif;
+  color:#e8e0f0;font-family:'Vazirmatn','Tahoma',sans-serif;
   direction:rtl;min-height:100vh;max-width:480px;margin:0 auto;padding-bottom:80px;
 }
-
-/* AUTH */
 #authScreen{
   position:fixed;inset:0;background:#0a0a0f;z-index:999;
   display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;
 }
-.auth-logo{font-size:64px;margin-bottom:24px}
-.auth-title{font-size:22px;font-weight:800;color:#c084fc;margin-bottom:8px}
-.auth-sub{font-size:13px;color:#7a6a9a;margin-bottom:32px;text-align:center}
+.auth-logo{font-size:64px;margin-bottom:20px}
+.auth-title{font-size:24px;font-weight:800;color:#c084fc;margin-bottom:6px;letter-spacing:4px}
+.auth-sub{font-size:13px;color:#7a6a9a;margin-bottom:28px;text-align:center;line-height:1.8}
 .auth-input{
   width:100%;padding:14px 16px;border-radius:12px;
   background:rgba(255,255,255,0.06);border:1px solid rgba(150,80,255,0.3);
@@ -40,171 +37,184 @@ body{
   background:linear-gradient(135deg,#7c3aed,#c084fc);
   color:white;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;
 }
-.auth-err{font-size:12px;color:#f87171;margin-bottom:12px;min-height:18px}
-
-/* HEADER */
+.auth-err{font-size:12px;color:#f87171;margin-bottom:10px;min-height:18px;text-align:center}
 .header{
-  padding:24px 20px 16px;
-  background:linear-gradient(180deg,rgba(120,40,200,0.15) 0%,transparent 100%);
+  padding:20px 20px 14px;
+  background:linear-gradient(180deg,rgba(120,40,200,0.18) 0%,transparent 100%);
   border-bottom:1px solid rgba(150,80,255,0.15);
 }
 .header-top{display:flex;justify-content:space-between;align-items:center}
-.day-label{font-size:13px;color:#9b7fc7;margin-bottom:2px}
-.day-count{font-size:28px;font-weight:800;color:#c084fc}
-.streak-box{text-align:center}
-.streak-icon{font-size:36px;line-height:1}
-.streak-label{font-size:13px;color:#f59e0b;margin-top:2px}
-.progress-wrap{margin-top:16px}
-.progress-info{display:flex;justify-content:space-between;font-size:12px;color:#9b7fc7;margin-bottom:6px}
-.progress-bar{height:6px;background:rgba(150,80,255,0.15);border-radius:3px;overflow:hidden}
+.app-brand{display:flex;flex-direction:column}
+.app-name{font-size:11px;color:#5a4a7a;letter-spacing:3px;margin-bottom:2px}
+.day-count{font-size:26px;font-weight:800;color:#c084fc}
+.streak-box{text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px}
+.streak-icon{font-size:30px;line-height:1}
+.streak-label{font-size:12px;color:#f59e0b}
+.progress-wrap{margin-top:13px}
+.progress-info{display:flex;justify-content:space-between;font-size:12px;color:#9b7fc7;margin-bottom:5px}
+.progress-bar{height:5px;background:rgba(150,80,255,0.12);border-radius:3px;overflow:hidden}
 .progress-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#c084fc);border-radius:3px;transition:width 0.5s}
 .mantra-box{
-  margin-top:16px;padding:10px 14px;background:rgba(120,40,200,0.1);
-  border-radius:10px;border:1px solid rgba(150,80,255,0.2);
-  font-size:13px;color:#d4b8f0;line-height:1.7;min-height:46px;
+  margin-top:13px;padding:9px 13px;background:rgba(120,40,200,0.08);
+  border-radius:10px;border:1px solid rgba(150,80,255,0.13);
+  font-size:12px;color:#c4a8e8;line-height:1.7;min-height:40px;
 }
-
-/* TABS */
-.tabs{display:flex;padding:0 20px;gap:8px;margin:16px 0 8px}
+.tabs{display:flex;padding:0 20px;gap:8px;margin:13px 0 6px}
 .tab-btn{
   flex:1;padding:8px 0;border-radius:8px;border:none;cursor:pointer;
   font-size:13px;font-weight:600;font-family:inherit;transition:all 0.2s;
 }
 .tab-btn.active{background:rgba(120,40,200,0.4);color:#c084fc}
 .tab-btn:not(.active){background:rgba(255,255,255,0.05);color:#7a6a9a}
-
-/* CONTENT */
 .content{padding:0 20px}
 .tab-content{display:none}
 .tab-content.active{display:block}
-.phase-label{font-size:12px;font-weight:700;margin-bottom:8px;opacity:0.8}
-.phase-group{margin-bottom:20px}
+.phase-group{margin-bottom:16px}
+.phase-label{font-size:12px;font-weight:700;opacity:0.85;margin-bottom:7px}
 
+/* HABIT STATES */
 .habit-item{
-  display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:8px;
-  border-radius:12px;cursor:pointer;transition:all 0.2s;user-select:none;
-  border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);
+  display:flex;align-items:center;gap:10px;padding:11px 13px;margin-bottom:7px;
+  border-radius:12px;border:1px solid rgba(255,255,255,0.07);
+  background:rgba(255,255,255,0.03);transition:all 0.2s;user-select:none;position:relative;
 }
-.habit-item.done{background:rgba(120,40,200,0.2);border-color:rgba(192,132,252,0.4)}
-.habit-icon{font-size:20px;min-width:24px;text-align:center}
-.habit-label{flex:1;font-size:13px;color:#9b8ab0;line-height:1.4}
-.habit-item.done .habit-label{color:#e8d5ff}
+.habit-item.locked{opacity:0.35;cursor:default}
+.habit-item.active-h{cursor:pointer}
+.habit-item.active-h:active{transform:scale(0.98)}
+.habit-item.active-h.done{background:rgba(120,40,200,0.2);border-color:rgba(192,132,252,0.35)}
+.habit-item.active-h .habit-label{color:#9b8ab0}
+.habit-item.active-h.done .habit-label{color:#e8d5ff}
+.habit-item.stable-h{cursor:default;background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.18)}
+.habit-item.stable-h .habit-label{color:#6ee7b7}
+.habit-icon{font-size:18px;min-width:22px;text-align:center}
+.habit-label{flex:1;font-size:13px;line-height:1.4}
 .habit-check{
-  width:24px;height:24px;border-radius:6px;border:2px solid rgba(255,255,255,0.2);
+  width:22px;height:22px;border-radius:6px;border:2px solid rgba(255,255,255,0.13);
   background:transparent;display:flex;align-items:center;justify-content:center;
-  font-size:14px;transition:all 0.2s;color:white;flex-shrink:0;
+  font-size:13px;transition:all 0.2s;color:white;flex-shrink:0;
 }
-.habit-item.done .habit-check{border-color:#c084fc;background:#c084fc}
+.habit-item.active-h.done .habit-check{border-color:#c084fc;background:#c084fc}
+.habit-item.stable-h .habit-check{border-color:#34d399;background:rgba(52,211,153,0.18);font-size:11px}
+.activate-btn{
+  font-size:10px;padding:3px 8px;border-radius:6px;border:1px solid rgba(192,132,252,0.35);
+  background:rgba(124,58,237,0.12);color:#c084fc;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0;
+}
+.stabilize-btn{
+  font-size:10px;padding:3px 8px;border-radius:6px;border:1px solid rgba(52,211,153,0.35);
+  background:rgba(52,211,153,0.08);color:#34d399;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0;
+}
+.stable-badge{
+  font-size:10px;padding:3px 8px;border-radius:6px;
+  background:rgba(52,211,153,0.1);color:#34d399;flex-shrink:0;
+}
+.streak-mini{
+  position:absolute;left:10px;top:50%;transform:translateY(-50%);
+  font-size:10px;color:#f59e0b;opacity:0.65;pointer-events:none;
+}
 
-.note-label{font-size:12px;color:#9b7fc7;font-weight:700;margin-bottom:8px}
+.note-label{font-size:12px;color:#9b7fc7;font-weight:700;margin-bottom:7px}
 textarea{
-  width:100%;min-height:80px;background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;
+  width:100%;min-height:75px;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.09);border-radius:12px;padding:11px;
   color:#e8e0f0;font-size:13px;line-height:1.8;resize:vertical;
   font-family:inherit;direction:rtl;outline:none;
 }
-
 .alert-box{
-  padding:14px;border-radius:12px;margin:16px 0;
-  background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);
+  padding:13px;border-radius:12px;margin:14px 0;
+  background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.17);
 }
-.alert-title{font-size:13px;font-weight:700;color:#f87171;margin-bottom:8px}
+.alert-title{font-size:13px;font-weight:700;color:#f87171;margin-bottom:7px}
 .alert-steps{font-size:12px;color:#9b8ab0;line-height:2}
-
-/* HISTORY */
-.history-item{
-  display:flex;align-items:center;gap:12px;padding:10px 14px;margin-bottom:6px;
-  border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
+.agile-guide{
+  padding:12px 13px;border-radius:12px;margin-bottom:13px;
+  background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.16);
 }
-.history-item.today{background:rgba(120,40,200,0.15);border-color:rgba(192,132,252,0.3)}
-.history-date{font-size:12px;color:#7a6a9a;min-width:75px}
-.history-bar{flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
-.history-fill{height:100%;border-radius:2px}
-.history-count{font-size:12px;color:#9b7fc7;min-width:30px;text-align:left}
+.agile-title{font-size:12px;font-weight:700;color:#60a5fa;margin-bottom:5px}
+.agile-text{font-size:12px;color:#6a8aa0;line-height:1.9}
 
-/* REPORT */
+.history-item{
+  display:flex;align-items:center;gap:10px;padding:9px 13px;margin-bottom:5px;
+  border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);
+}
+.history-item.today{background:rgba(120,40,200,0.13);border-color:rgba(192,132,252,0.23)}
+.history-date{font-size:12px;color:#7a6a9a;min-width:55px}
+.history-bar{flex:1;height:4px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden}
+.history-fill{height:100%;border-radius:2px}
+.history-count{font-size:11px;color:#9b7fc7;min-width:28px;text-align:left}
+
 .big-btn{
-  width:100%;padding:14px;background:linear-gradient(135deg,#7c3aed,#c084fc);
-  border:none;border-radius:12px;color:white;font-size:15px;font-weight:700;
-  cursor:pointer;margin-bottom:12px;font-family:inherit;
+  width:100%;padding:13px;background:linear-gradient(135deg,#7c3aed,#c084fc);
+  border:none;border-radius:12px;color:white;font-size:14px;font-weight:700;
+  cursor:pointer;margin-bottom:10px;font-family:inherit;
 }
 .sec-btn{
-  width:100%;padding:11px;background:rgba(120,40,200,0.15);
-  border:1px solid rgba(192,132,252,0.3);border-radius:12px;color:#c084fc;
-  font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px;font-family:inherit;
+  width:100%;padding:10px;background:rgba(120,40,200,0.1);
+  border:1px solid rgba(192,132,252,0.22);border-radius:12px;color:#c084fc;
+  font-size:13px;font-weight:600;cursor:pointer;margin-bottom:10px;font-family:inherit;
 }
 .report-box{
-  padding:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
-  border-radius:12px;margin-bottom:16px;display:none;
+  padding:13px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+  border-radius:12px;margin-bottom:14px;display:none;
 }
 .report-text{font-size:12px;color:#d4b8f0;line-height:1.8;white-space:pre-wrap;font-family:inherit}
 .copy-btn{
-  margin-top:12px;width:100%;padding:10px;background:rgba(120,40,200,0.3);
-  border:1px solid rgba(192,132,252,0.4);border-radius:8px;color:#c084fc;
+  margin-top:10px;width:100%;padding:9px;background:rgba(120,40,200,0.22);
+  border:1px solid rgba(192,132,252,0.3);border-radius:8px;color:#c084fc;
   font-size:13px;cursor:pointer;font-family:inherit;
 }
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:13px}
 .stat-card{
-  padding:12px 14px;background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);border-radius:10px;text-align:center;
+  padding:11px 13px;background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);border-radius:10px;text-align:center;
 }
-.stat-value{font-size:20px;font-weight:800;color:#c084fc}
+.stat-value{font-size:19px;font-weight:800;color:#c084fc}
 .stat-label{font-size:11px;color:#7a6a9a;margin-top:2px}
+.divider{height:1px;background:rgba(255,255,255,0.06);margin:13px 0}
+.section-title{font-size:13px;color:#9b7fc7;margin-bottom:11px;font-weight:600}
 .danger-btn{
-  width:100%;padding:10px;background:transparent;border:1px solid rgba(239,68,68,0.3);
-  border-radius:10px;color:#f87171;font-size:12px;cursor:pointer;font-family:inherit;margin-top:8px;
+  width:100%;padding:10px;background:transparent;border:1px solid rgba(239,68,68,0.23);
+  border-radius:10px;color:#f87171;font-size:12px;cursor:pointer;font-family:inherit;margin-top:6px;
 }
-.section-title{font-size:13px;color:#9b7fc7;margin-bottom:16px}
-.io-row{display:flex;gap:8px;margin-bottom:8px}
-.io-row .sec-btn{margin-bottom:0}
-.divider{height:1px;background:rgba(255,255,255,0.06);margin:16px 0}
-
-/* BOTTOM NAV */
 .bottom-nav{
   position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:480px;background:rgba(10,10,15,0.97);
-  border-top:1px solid rgba(150,80,255,0.15);display:flex;padding:8px 0;
+  width:100%;max-width:480px;background:rgba(8,8,14,0.98);
+  border-top:1px solid rgba(150,80,255,0.11);display:flex;padding:8px 0;
 }
 .nav-btn{
   flex:1;background:transparent;border:none;cursor:pointer;
-  padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:5px 0;display:flex;flex-direction:column;align-items:center;gap:2px;
 }
-.nav-icon{font-size:20px}
-.nav-label{font-size:10px;color:#4a3a6a}
+.nav-icon{font-size:19px}
+.nav-label{font-size:10px;color:#3a2a5a}
 .nav-btn.active .nav-label{color:#c084fc}
-
 #installBanner{
-  display:none;margin:12px 20px 0;padding:12px 14px;
-  background:rgba(124,58,237,0.15);border:1px solid rgba(192,132,252,0.3);
+  display:none;margin:10px 20px 0;padding:11px 13px;
+  background:rgba(124,58,237,0.1);border:1px solid rgba(192,132,252,0.22);
   border-radius:12px;font-size:13px;color:#d4b8f0;align-items:center;gap:10px;
 }
 #installBanner button{
   background:#7c3aed;border:none;border-radius:8px;color:white;
-  font-size:12px;padding:6px 12px;cursor:pointer;font-family:inherit;white-space:nowrap;
+  font-size:12px;padding:5px 11px;cursor:pointer;font-family:inherit;white-space:nowrap;
 }
-
 input[type=file]{display:none}
 </style>
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
 <div id="authScreen">
-  <div class="auth-logo">🔐</div>
-  <div class="auth-title" id="authTitle">ورود به برنامه</div>
-  <div class="auth-sub" id="authSub">رمز عبور خود را وارد کنید</div>
+  <div class="auth-logo">🔥</div>
+  <div class="auth-title">APEX</div>
+  <div class="auth-sub" id="authSub">Be the peak.<br>رمز عبور را وارد کنید</div>
   <div class="auth-err" id="authErr"></div>
   <input class="auth-input" type="password" id="authInput" placeholder="رمز عبور" autocomplete="current-password">
   <button class="auth-btn" onclick="doAuth()">ورود</button>
 </div>
 
-<!-- MAIN APP -->
 <div id="app" style="display:none">
-
 <div class="header">
   <div class="header-top">
-    <div>
-      <div class="day-label">برنامه روزانه</div>
+    <div class="app-brand">
+      <div class="app-name">A&nbsp;P&nbsp;E&nbsp;X</div>
       <div class="day-count" id="dayCount">روز ۱</div>
     </div>
     <div class="streak-box">
@@ -215,7 +225,7 @@ input[type=file]{display:none}
   <div class="progress-wrap">
     <div class="progress-info">
       <span>پیشرفت امروز</span>
-      <span id="progressText">۰/۱۳</span>
+      <span id="progressText">۰/۰</span>
     </div>
     <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
   </div>
@@ -234,89 +244,14 @@ input[type=file]{display:none}
   <button class="tab-btn" onclick="switchTab('report',this,'nav-report')">گزارش</button>
 </div>
 
-<!-- TODAY -->
 <div class="content tab-content active" id="tab-today">
-
-  <div class="phase-group">
-    <div class="phase-label" style="color:#c084fc">فاز ۱ — هسته اصلی</div>
-    <div class="habit-item" id="h-alpha" onclick="toggle('alpha')">
-      <span class="habit-icon">🛡️</span>
-      <span class="habit-label">انضباط دیجیتال</span>
-      <div class="habit-check" id="c-alpha"></div>
-    </div>
-    <div class="habit-item" id="h-beta" onclick="toggle('beta')">
-      <span class="habit-icon">⚡</span>
-      <span class="habit-label">ذخیره انرژی</span>
-      <div class="habit-check" id="c-beta"></div>
-    </div>
-    <div class="habit-item" id="h-pr1" onclick="toggle('pr1')">
-      <span class="habit-icon">🌄</span>
-      <span class="habit-label">نماز صبح</span>
-      <div class="habit-check" id="c-pr1"></div>
-    </div>
-    <div class="habit-item" id="h-pr2" onclick="toggle('pr2')">
-      <span class="habit-icon">☀️</span>
-      <span class="habit-label">نماز ظهر</span>
-      <div class="habit-check" id="c-pr2"></div>
-    </div>
-    <div class="habit-item" id="h-pr3" onclick="toggle('pr3')">
-      <span class="habit-icon">🌤️</span>
-      <span class="habit-label">نماز عصر</span>
-      <div class="habit-check" id="c-pr3"></div>
-    </div>
-    <div class="habit-item" id="h-pr4" onclick="toggle('pr4')">
-      <span class="habit-icon">🌆</span>
-      <span class="habit-label">نماز مغرب</span>
-      <div class="habit-check" id="c-pr4"></div>
-    </div>
-    <div class="habit-item" id="h-pr5" onclick="toggle('pr5')">
-      <span class="habit-icon">🌙</span>
-      <span class="habit-label">نماز عشاء</span>
-      <div class="habit-check" id="c-pr5"></div>
-    </div>
-    <div class="habit-item" id="h-wudu" onclick="toggle('wudu')">
-      <span class="habit-icon">💧</span>
-      <span class="habit-label">تجدید وضو (حداقل ۳ بار در روز)</span>
-      <div class="habit-check" id="c-wudu"></div>
-    </div>
-    <div class="habit-item" id="h-panahi" onclick="toggle('panahi')">
-      <span class="habit-icon">🎧</span>
-      <span class="habit-label">پناهیان — حداقل ۱ جلسه کامل</span>
-      <div class="habit-check" id="c-panahi"></div>
-    </div>
+  <div class="agile-guide">
+    <div class="agile-title">⚡ Bite &amp; Hold</div>
+    <div class="agile-text">هر عادت رو جداگانه فعال کن. بعد از ۲۱ روز متوالی، تثبیتش کن و برو سراغ بعدی. یهو همه رو با هم شروع نکن.</div>
   </div>
-
-  <div class="phase-group">
-    <div class="phase-label" style="color:#60a5fa">فاز ۲ — از هفته سوم</div>
-    <div class="habit-item" id="h-sleep" onclick="toggle('sleep')">
-      <span class="habit-icon">😴</span>
-      <span class="habit-label">خوابیدن ساعت ثابت</span>
-      <div class="habit-check" id="c-sleep"></div>
-    </div>
-    <div class="habit-item" id="h-wakeup" onclick="toggle('wakeup')">
-      <span class="habit-icon">🌅</span>
-      <span class="habit-label">بیدار شدن ساعت ثابت</span>
-      <div class="habit-check" id="c-wakeup"></div>
-    </div>
-    <div class="habit-item" id="h-pushup" onclick="toggle('pushup')">
-      <span class="habit-icon">💪</span>
-      <span class="habit-label">پوش‌آپ صبح — ۲۰ تکرار</span>
-      <div class="habit-check" id="c-pushup"></div>
-    </div>
-  </div>
-
-  <div class="phase-group">
-    <div class="phase-label" style="color:#34d399">فاز ۳ — از ماه دوم</div>
-    <div class="habit-item" id="h-walk" onclick="toggle('walk')">
-      <span class="habit-icon">🚶</span>
-      <span class="habit-label">پیاده‌روی — حداقل ۱۵ دقیقه</span>
-      <div class="habit-check" id="c-walk"></div>
-    </div>
-  </div>
-
+  <div id="habitsContainer"></div>
   <div class="note-label">📝 یادداشت امروز</div>
   <textarea id="noteArea" placeholder="هر چیزی که می‌خوای بنویس..." oninput="saveNote()"></textarea>
-
   <div class="alert-box">
     <div class="alert-title">🚨 در لحظه سخت؟</div>
     <div class="alert-steps">
@@ -326,41 +261,32 @@ input[type=file]{display:none}
       ۴. ۱۵ دقیقه صبر کن — این حال رد می‌شه
     </div>
   </div>
-
 </div>
 
-<!-- HISTORY -->
 <div class="content tab-content" id="tab-history">
   <div class="section-title">۳۰ روز اخیر</div>
   <div id="historyList"></div>
 </div>
 
-<!-- REPORT -->
 <div class="content tab-content" id="tab-report">
-  <div class="section-title">گزارش و مدیریت داده</div>
-
+  <div class="section-title">گزارش و مدیریت</div>
   <div class="stats-grid" id="statsGrid"></div>
-
   <button class="big-btn" onclick="generateReport()">📊 تولید گزارش هفتگی</button>
   <div class="report-box" id="reportBox">
     <div class="report-text" id="reportText"></div>
     <button class="copy-btn" onclick="copyReport()">📋 کپی گزارش</button>
   </div>
-
   <div class="divider"></div>
-  <div class="section-title">📦 پشتیبان‌گیری و بازیابی</div>
-
+  <div class="section-title">📦 پشتیبان‌گیری</div>
   <button class="sec-btn" onclick="exportData()">⬇️ خروجی کامل (Export)</button>
   <button class="sec-btn" onclick="document.getElementById('importFile').click()">⬆️ بارگذاری پشتیبان (Import)</button>
   <input type="file" id="importFile" accept=".json" onchange="importData(event)">
-
   <div class="divider"></div>
   <div class="section-title">⚙️ تنظیمات</div>
   <button class="sec-btn" onclick="changePwd()">🔑 تغییر رمز عبور</button>
   <button class="danger-btn" onclick="resetData()">🔄 شروع مجدد از صفر</button>
 </div>
-
-</div><!-- end app -->
+</div>
 
 <div class="bottom-nav" id="bottomNav" style="display:none">
   <button class="nav-btn active" id="nav-today" onclick="switchTab('today',null,'nav-today')">
@@ -375,338 +301,265 @@ input[type=file]{display:none}
 </div>
 
 <script>
-// ── HABITS ──────────────────────────────────────────────
-const HABITS = ['alpha','beta','pr1','pr2','pr3','pr4','pr5','wudu','panahi','sleep','wakeup','pushup','walk'];
-const TOTAL = HABITS.length;
-
-// ── PERSIAN NUMBERS ─────────────────────────────────────
-const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
-
-// ── JALALI CONVERSION ───────────────────────────────────
-function toJalali(gy, gm, gd) {
-  const jdm = [31,31,31,31,31,31,30,30,30,30,30,29];
-  let jy = gy - 1600; gy -= 1600; gd -= 1;
-  let gDN = 365*gy + Math.floor((gy+3)/4) - Math.floor((gy+99)/100) + Math.floor((gy+399)/400);
-  for (let i=0; i<gm-1; i++) gDN += [31,28,31,30,31,30,31,31,30,31,30,31][i];
-  if (gm>2 && ((gy+1600)%4===0 && ((gy+1600)%100!==0 || (gy+1600)%400===0))) gDN++;
-  gDN += gd;
-  let jDN = gDN - 79;
-  let jnp = Math.floor(jDN/12053); jDN %= 12053;
-  jy = 979 + 33*jnp + 4*Math.floor(jDN/1461);
-  jDN %= 1461;
-  if (jDN >= 366) { jy += Math.floor((jDN-1)/365); jDN = (jDN-1)%365; }
-  let jm = 0;
-  for (let i=0; i<11 && jDN>=jdm[i]; i++) { jDN -= jdm[i]; jm++; }
-  return { y: jy, m: jm+1, d: jDN+1 };
-}
-const JMONTHS = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
-
-function dateToJalali(dateObj) {
-  const j = toJalali(dateObj.getFullYear(), dateObj.getMonth()+1, dateObj.getDate());
-  return { ...j, str: `${fa(j.d)} ${JMONTHS[j.m-1]} ${fa(j.y)}`, short: `${fa(j.d)}/${fa(j.m)}` };
-}
-
-function todayKey() { return new Date().toISOString().split('T')[0]; }
-
-// ── MANTRAS ─────────────────────────────────────────────
-const MANTRAS = [
-  "اتفاق‌های ناخواسته شکست نیستن. روز ادامه داره.",
-  "بین فکر و عمل مکث کن. برخیز.",
-  "مغزت ظرفیت داره. فقط زیرساختش رو بساز.",
-  "اون دوره طلایی یه توهم نبود. یه نسخه واقعی از توئه.",
-  "انگیزه موج داره. سیستم تو رو نگه می‌داره.",
-  "قبل از هر چیز دیگه، بلند شو از جات.",
-  "۱۵ دقیقه صبر کن. این حال رد می‌شه.",
-  "هر روزی که پایدار موندی، یه مسیر عصبی جدید ساختی.",
-  "تو قبلاً یک سال تموم موفق شدی. این رو می‌دونی.",
+const HDEFS=[
+  {id:'alpha', icon:'🛡️',label:'انضباط دیجیتال',           ph:1,pc:'#c084fc'},
+  {id:'beta',  icon:'⚡', label:'ذخیره انرژی',              ph:1,pc:'#c084fc'},
+  {id:'pr1',   icon:'🌄',label:'نماز صبح — خوندم',          ph:1,pc:'#c084fc'},
+  {id:'pr1t',  icon:'⏰',label:'نماز صبح — اول وقت',        ph:1,pc:'#c084fc'},
+  {id:'pr2',   icon:'☀️',label:'نماز ظهر — خوندم',          ph:1,pc:'#c084fc'},
+  {id:'pr2t',  icon:'⏰',label:'نماز ظهر — اول وقت',        ph:1,pc:'#c084fc'},
+  {id:'pr3',   icon:'🌤️',label:'نماز عصر — خوندم',          ph:1,pc:'#c084fc'},
+  {id:'pr3t',  icon:'⏰',label:'نماز عصر — اول وقت',        ph:1,pc:'#c084fc'},
+  {id:'pr4',   icon:'🌆',label:'نماز مغرب — خوندم',         ph:1,pc:'#c084fc'},
+  {id:'pr4t',  icon:'⏰',label:'نماز مغرب — اول وقت',       ph:1,pc:'#c084fc'},
+  {id:'pr5',   icon:'🌙',label:'نماز عشاء — خوندم',         ph:1,pc:'#c084fc'},
+  {id:'pr5t',  icon:'⏰',label:'نماز عشاء — اول وقت',       ph:1,pc:'#c084fc'},
+  {id:'wudu',  icon:'💧',label:'تجدید وضو — حداقل ۳ بار',   ph:1,pc:'#c084fc'},
+  {id:'panahi',icon:'🎧',label:'پناهیان — حداقل ۱ جلسه',    ph:1,pc:'#c084fc'},
+  {id:'sleep', icon:'😴',label:'خوابیدن ساعت ثابت',         ph:2,pc:'#60a5fa'},
+  {id:'wakeup',icon:'🌅',label:'بیدار شدن ساعت ثابت',       ph:2,pc:'#60a5fa'},
+  {id:'pushup',icon:'💪',label:'پوش‌آپ صبح — ۲۰ تکرار',     ph:2,pc:'#60a5fa'},
+  {id:'walk',  icon:'🚶',label:'پیاده‌روی — حداقل ۱۵ دقیقه',ph:3,pc:'#34d399'},
 ];
-let mantraIdx = 0;
+const PNAMES={1:'فاز ۱ — هسته اصلی',2:'فاز ۲ — از هفته سوم',3:'فاز ۳ — از ماه دوم'};
+const STABLE=21;
+const fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
 
-// ── AUTH ─────────────────────────────────────────────────
-function simpleHash(s) {
-  let h = 0;
-  for (let i=0; i<s.length; i++) h = (Math.imul(31,h)+s.charCodeAt(i))|0;
-  return String(h>>>0);
+function toJ(gy,gm,gd){
+  const jdm=[31,31,31,31,31,31,30,30,30,30,30,29];
+  let jy=gy-1600;gy-=1600;gd-=1;
+  let g=365*gy+Math.floor((gy+3)/4)-Math.floor((gy+99)/100)+Math.floor((gy+399)/400);
+  for(let i=0;i<gm-1;i++)g+=[31,28,31,30,31,30,31,31,30,31,30,31][i];
+  if(gm>2&&((gy+1600)%4===0&&((gy+1600)%100!==0||(gy+1600)%400===0)))g++;
+  g+=gd;let jd=g-79;
+  let jnp=Math.floor(jd/12053);jd%=12053;
+  jy=979+33*jnp+4*Math.floor(jd/1461);jd%=1461;
+  if(jd>=366){jy+=Math.floor((jd-1)/365);jd=(jd-1)%365;}
+  let jm=0;for(let i=0;i<11&&jd>=jdm[i];i++){jd-=jdm[i];jm++;}
+  return{y:jy,m:jm+1,d:jd+1};
 }
+const JM=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+function dtJ(dt){const j=toJ(dt.getFullYear(),dt.getMonth()+1,dt.getDate());return{...j,str:`${fa(j.d)} ${JM[j.m-1]} ${fa(j.y)}`,short:`${fa(j.m)}/${fa(j.d)}`};}
+function tk(){return new Date().toISOString().split('T')[0];}
 
-function initAuth() {
-  const stored = localStorage.getItem('ge_h');
-  if (!stored) {
-    // First time — set password
-    document.getElementById('authTitle').textContent = 'تنظیم رمز عبور';
-    document.getElementById('authSub').textContent = 'یک رمز عبور برای خودت بساز';
-    document.getElementById('authInput').placeholder = 'رمز جدید';
+const MANTRAS=[
+  "Be the peak. 🔥",
+  "No regrets. No excuses.",
+  "Built, not born.",
+  "Rise. Daily.",
+  "Sharp mind. Clean life. Zero regrets.",
+  "Every day without regret.",
+  "Be who you prayed to become.",
+  "The best version of you is a discipline away.",
+  "Live like you'll remember this day.",
+  "رقابت نفس‌گیر فقط با خودت.",
+  "هر روزی که پایدار موندی، یه مسیر عصبی جدید ساختی.",
+  "اون نسخه طلایی یه توهم نبود. یه نسخه واقعی از توئه.",
+];
+let mi=0;
+
+function sh(s){let h=0;for(let i=0;i<s.length;i++)h=(Math.imul(31,h)+s.charCodeAt(i))|0;return String(h>>>0);}
+function initAuth(){
+  if(!localStorage.getItem('ge_h')){
+    document.getElementById('authSub').textContent='اولین بار است. یک رمز عبور برای خودت بساز.';
     document.getElementById('authInput').setAttribute('data-mode','set');
   }
-  document.getElementById('authInput').addEventListener('keydown', e => { if(e.key==='Enter') doAuth(); });
+  document.getElementById('authInput').addEventListener('keydown',e=>{if(e.key==='Enter')doAuth();});
 }
-
-function doAuth() {
-  const input = document.getElementById('authInput');
-  const val = input.value.trim();
-  const err = document.getElementById('authErr');
-  if (!val) { err.textContent = 'رمز عبور نمی‌تواند خالی باشد'; return; }
-  const mode = input.getAttribute('data-mode');
-  const stored = localStorage.getItem('ge_h');
-  if (!stored || mode==='set') {
-    if (val.length < 4) { err.textContent = 'رمز باید حداقل ۴ کاراکتر باشد'; return; }
-    localStorage.setItem('ge_h', simpleHash(val));
-    sessionStorage.setItem('ge_auth','1');
-    showApp();
-  } else {
-    if (simpleHash(val) === stored) {
-      sessionStorage.setItem('ge_auth','1');
-      showApp();
-    } else {
-      err.textContent = 'رمز عبور اشتباه است';
-      input.value = '';
-    }
+function doAuth(){
+  const inp=document.getElementById('authInput'),val=inp.value.trim(),err=document.getElementById('authErr');
+  if(!val){err.textContent='رمز نمی‌تواند خالی باشد';return;}
+  const stored=localStorage.getItem('ge_h');
+  if(!stored||inp.getAttribute('data-mode')==='set'){
+    if(val.length<4){err.textContent='رمز باید حداقل ۴ کاراکتر باشد';return;}
+    localStorage.setItem('ge_h',sh(val));sessionStorage.setItem('ge_a','1');showApp();
+  }else{
+    if(sh(val)===stored){sessionStorage.setItem('ge_a','1');showApp();}
+    else{err.textContent='رمز عبور اشتباه است';inp.value='';}
   }
 }
-
-function showApp() {
-  document.getElementById('authScreen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  document.getElementById('bottomNav').style.display = 'flex';
+function showApp(){
+  document.getElementById('authScreen').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('bottomNav').style.display='flex';
   init();
 }
-
-function changePwd() {
-  const np = prompt('رمز عبور جدید:');
-  if (!np || np.trim().length < 4) { alert('رمز باید حداقل ۴ کاراکتر باشد'); return; }
-  const cp = prompt('تأیید رمز جدید:');
-  if (np !== cp) { alert('رمزها یکسان نیستند'); return; }
-  localStorage.setItem('ge_h', simpleHash(np.trim()));
-  alert('رمز عبور تغییر کرد ✅');
+function changePwd(){
+  const np=prompt('رمز عبور جدید:');
+  if(!np||np.trim().length<4){alert('رمز باید حداقل ۴ کاراکتر باشد');return;}
+  if(np!==prompt('تأیید رمز جدید:')){alert('رمزها یکسان نیستند');return;}
+  localStorage.setItem('ge_h',sh(np.trim()));alert('رمز تغییر کرد ✅');
 }
 
-// ── DATA ─────────────────────────────────────────────────
-function loadData() {
-  try { const r = localStorage.getItem('ge_d2'); if(r) return JSON.parse(r); } catch(e){}
-  return { startDate: todayKey(), logs:{}, notes:{} };
+function defStates(){const s={};HDEFS.forEach((h,i)=>{s[h.id]=i<2?'active':'locked';});return s;}
+function ld(){
+  try{const r=localStorage.getItem('ge_d4');if(r)return JSON.parse(r);}catch(e){}
+  return{startDate:tk(),logs:{},notes:{},states:defStates()};
 }
-function save() { try { localStorage.setItem('ge_d2', JSON.stringify(data)); } catch(e){} }
-let data = loadData();
+function sv(){try{localStorage.setItem('ge_d4',JSON.stringify(data));}catch(e){}}
+let data=ld();
+function es(){if(!data.states)data.states={};HDEFS.forEach((h,i)=>{if(!data.states[h.id])data.states[h.id]=i<2?'active':'locked';});}
 
-// ── STATS ─────────────────────────────────────────────────
-function getDayCount() { return Math.floor((new Date()-new Date(data.startDate))/86400000)+1; }
-
-function getStreak() {
-  let s=0;
-  for (let i=0; i<365; i++) {
-    const d=new Date(); d.setDate(d.getDate()-i);
-    const log=data.logs[d.toISOString().split('T')[0]]||{};
-    if (log['alpha'] && log['beta']) s++; else break;
-  }
-  return s;
+function hStreak(id){
+  let s=0;for(let i=0;i<365;i++){const d=new Date();d.setDate(d.getDate()-i);const log=data.logs[d.toISOString().split('T')[0]]||{};if(log[id])s++;else break;}return s;
 }
-
-function getTodayDone() {
-  const log=data.logs[todayKey()]||{};
-  return HABITS.filter(h=>log[h]).length;
+function gStreak(){
+  let s=0;for(let i=0;i<365;i++){const d=new Date();d.setDate(d.getDate()-i);const log=data.logs[d.toISOString().split('T')[0]]||{};if(log['alpha']&&log['beta'])s++;else break;}return s;
 }
+function dayCount(){return Math.floor((new Date()-new Date(data.startDate))/86400000)+1;}
+function activeH(){return HDEFS.filter(h=>data.states[h.id]==='active');}
+function todayDone(){const log=data.logs[tk()]||{};return activeH().filter(h=>log[h.id]).length;}
 
-// ── HEADER ────────────────────────────────────────────────
-function updateHeader() {
-  const done=getTodayDone(), pct=Math.round((done/TOTAL)*100);
-  document.getElementById('dayCount').textContent='روز '+fa(getDayCount());
-  document.getElementById('streakLabel').textContent=fa(getStreak())+' روز';
-  document.getElementById('progressText').textContent=fa(done)+'/'+fa(TOTAL);
+function updateHeader(){
+  const a=activeH().length,d=todayDone(),pct=a>0?Math.round((d/a)*100):0;
+  document.getElementById('dayCount').textContent='روز '+fa(dayCount());
+  document.getElementById('streakLabel').textContent=fa(gStreak())+' روز';
+  document.getElementById('progressText').textContent=fa(d)+'/'+fa(a);
   document.getElementById('progressFill').style.width=pct+'%';
 }
 
-// ── HABITS ────────────────────────────────────────────────
-function toggle(id) {
-  const t=todayKey();
-  if(!data.logs[t]) data.logs[t]={};
-  data.logs[t][id]=!data.logs[t][id];
-  save(); renderHabits(); updateHeader();
+function toggle(id){
+  if(data.states[id]!=='active')return;
+  const t=tk();if(!data.logs[t])data.logs[t]={};
+  data.logs[t][id]=!data.logs[t][id];sv();renderHabits();updateHeader();
+}
+function activateH(id){data.states[id]='active';sv();renderHabits();updateHeader();}
+function stabilizeH(id){
+  const s=hStreak(id);
+  if(s<STABLE&&!confirm(`استریک فعلی: ${fa(s)} روز (کمتر از ${fa(STABLE)}). مطمئنی تثبیت شده؟`))return;
+  data.states[id]='stable';sv();renderHabits();updateHeader();
 }
 
-function renderHabits() {
-  const log=data.logs[todayKey()]||{};
-  HABITS.forEach(id=>{
-    const item=document.getElementById('h-'+id);
-    const check=document.getElementById('c-'+id);
-    if(!item) return;
-    if(log[id]){ item.classList.add('done'); check.textContent='✓'; }
-    else { item.classList.remove('done'); check.textContent=''; }
+function renderHabits(){
+  es();const log=data.logs[tk()]||{};
+  const phases={};
+  HDEFS.forEach(h=>{if(!phases[h.ph])phases[h.ph]={pc:h.pc,habits:[]};phases[h.ph].habits.push(h);});
+  let html='';
+  Object.keys(phases).forEach(p=>{
+    const grp=phases[p];
+    html+=`<div class="phase-group"><div class="phase-label" style="color:${grp.pc}">${PNAMES[p]}</div>`;
+    grp.habits.forEach(h=>{
+      const st=data.states[h.id]||'locked';
+      const checked=log[h.id]||false;
+      const streak=st==='active'?hStreak(h.id):0;
+      const smini=st==='active'&&streak>0?`<span class="streak-mini">${fa(streak)}🔥</span>`:'';
+      const showStab=st==='active'&&streak>=STABLE;
+      if(st==='locked'){
+        html+=`<div class="habit-item locked"><span class="habit-icon">${h.icon}</span><span class="habit-label">${h.label}</span><button class="activate-btn" onclick="activateH('${h.id}')">فعال کن</button></div>`;
+      }else if(st==='active'){
+        html+=`<div class="habit-item active-h ${checked?'done':''}" onclick="toggle('${h.id}')">${smini}<span class="habit-icon">${h.icon}</span><span class="habit-label">${h.label}</span>${showStab?`<button class="stabilize-btn" onclick="event.stopPropagation();stabilizeH('${h.id}')">تثبیت ✓</button>`:''}<div class="habit-check">${checked?'✓':''}</div></div>`;
+      }else{
+        html+=`<div class="habit-item stable-h"><span class="habit-icon">${h.icon}</span><span class="habit-label">${h.label}</span><span class="stable-badge">تثبیت ✓</span><div class="habit-check">✓</div></div>`;
+      }
+    });
+    html+='</div>';
   });
+  document.getElementById('habitsContainer').innerHTML=html;
 }
 
-function saveNote() {
-  data.notes[todayKey()]=document.getElementById('noteArea').value; save();
-}
-function loadNote() {
-  document.getElementById('noteArea').value=data.notes[todayKey()]||'';
-}
+function saveNote(){data.notes[tk()]=document.getElementById('noteArea').value;sv();}
+function loadNote(){document.getElementById('noteArea').value=data.notes[tk()]||'';}
 
-// ── HISTORY ───────────────────────────────────────────────
-function renderHistory() {
-  const today=todayKey(); let html='';
-  for(let i=0; i<30; i++) {
-    const d=new Date(); d.setDate(d.getDate()-i);
-    const key=d.toISOString().split('T')[0];
-    const log=data.logs[key]||{};
-    const done=HABITS.filter(h=>log[h]).length;
-    const pct=Math.round((done/TOTAL)*100);
-    const fill=pct===100?'#c084fc':pct>60?'#7c3aed':pct>30?'#4a3080':'#2a1a40';
-    const j=dateToJalali(d);
-    const noteIcon=data.notes[key]?'📝':'';
-    html+=`<div class="history-item ${key===today?'today':''}">
-      <span class="history-date">${j.short}</span>
-      <div class="history-bar"><div class="history-fill" style="width:${pct}%;background:${fill}"></div></div>
-      <span class="history-count">${fa(done)}/${fa(TOTAL)}</span>
-      <span style="font-size:10px">${noteIcon}</span>
-    </div>`;
+function renderHistory(){
+  const today=tk();let html='';const a=activeH().length||1;
+  for(let i=0;i<30;i++){
+    const d=new Date();d.setDate(d.getDate()-i);const key=d.toISOString().split('T')[0];
+    const log=data.logs[key]||{};const done=HDEFS.filter(h=>log[h.id]).length;
+    const pct=Math.round((done/a)*100);
+    const fill=pct>=100?'#c084fc':pct>60?'#7c3aed':pct>30?'#4a3080':'#2a1a40';
+    const j=dtJ(d);const ni=data.notes[key]?'📝':'';
+    html+=`<div class="history-item ${key===today?'today':''}"><span class="history-date">${j.short}</span><div class="history-bar"><div class="history-fill" style="width:${Math.min(pct,100)}%;background:${fill}"></div></div><span class="history-count">${fa(done)}</span><span style="font-size:10px">${ni}</span></div>`;
   }
   document.getElementById('historyList').innerHTML=html;
 }
 
-// ── STATS GRID ────────────────────────────────────────────
-function renderStats() {
-  const sd=new Date(data.startDate);
-  const jsd=dateToJalali(sd);
+function renderStats(){
+  const stable=HDEFS.filter(h=>data.states[h.id]==='stable').length;
+  const jsd=dtJ(new Date(data.startDate));
   document.getElementById('statsGrid').innerHTML=`
-    <div class="stat-card"><div class="stat-value" style="font-size:14px">${jsd.short}</div><div class="stat-label">روز شروع</div></div>
-    <div class="stat-card"><div class="stat-value">${fa(getDayCount())}</div><div class="stat-label">روز کلی</div></div>
-    <div class="stat-card"><div class="stat-value">${fa(getStreak())} 🔥</div><div class="stat-label">استریک فعلی</div></div>
-    <div class="stat-card"><div class="stat-value">${fa(getTodayDone())}/${fa(TOTAL)}</div><div class="stat-label">امروز</div></div>`;
+    <div class="stat-card"><div class="stat-value" style="font-size:13px">${jsd.short}</div><div class="stat-label">شروع</div></div>
+    <div class="stat-card"><div class="stat-value">${fa(dayCount())}</div><div class="stat-label">روز کلی</div></div>
+    <div class="stat-card"><div class="stat-value">${fa(gStreak())} 🔥</div><div class="stat-label">استریک</div></div>
+    <div class="stat-card"><div class="stat-value">${fa(stable)}/${fa(HDEFS.length)}</div><div class="stat-label">تثبیت‌شده</div></div>`;
 }
 
-// ── REPORT ────────────────────────────────────────────────
-function generateReport() {
-  let text=`📊 گزارش پیشرفت\n`;
-  const jToday=dateToJalali(new Date());
-  text+=`📅 تاریخ: ${jToday.str}\n`;
-  text+=`🗓 روز ${fa(getDayCount())} از شروع\n`;
-  text+=`🔥 استریک: ${fa(getStreak())} روز\n\n`;
-  text+=`هفته اخیر:\n${'─'.repeat(30)}\n`;
-  for(let i=0; i<7; i++){
-    const d=new Date(); d.setDate(d.getDate()-i);
-    const key=d.toISOString().split('T')[0];
-    const log=data.logs[key]||{};
-    const done=HABITS.filter(h=>log[h]).length;
-    const j=dateToJalali(d);
-    const bar='█'.repeat(Math.round(done/TOTAL*10))+'░'.repeat(10-Math.round(done/TOTAL*10));
-    text+=`${j.short}: ${bar} ${fa(done)}/${fa(TOTAL)}\n`;
-    if(data.notes[key]) text+=`  📝 ${data.notes[key]}\n`;
+function generateReport(){
+  const jt=dtJ(new Date());
+  const stable=HDEFS.filter(h=>data.states[h.id]==='stable').length;
+  let text=`📊 گزارش قرار\n📅 ${jt.str}\n🗓 روز ${fa(dayCount())} از شروع\n🔥 استریک: ${fa(gStreak())} روز\n✅ تثبیت‌شده: ${fa(stable)}/${fa(HDEFS.length)}\n\nهفته اخیر:\n${'─'.repeat(26)}\n`;
+  for(let i=0;i<7;i++){
+    const d=new Date();d.setDate(d.getDate()-i);const key=d.toISOString().split('T')[0];
+    const log=data.logs[key]||{};const done=HDEFS.filter(h=>log[h.id]).length;
+    const j=dtJ(d);const bar='█'.repeat(Math.round(done/HDEFS.length*8))+'░'.repeat(8-Math.round(done/HDEFS.length*8));
+    text+=`${j.short}: ${bar} ${fa(done)}\n`;
+    if(data.notes[key])text+=`  📝 ${data.notes[key]}\n`;
   }
-  text+=`${'─'.repeat(30)}\n💜 توسط تیم متخصص پشتیبانی می‌شم`;
+  text+=`${'─'.repeat(26)}\nApex — Be the peak. 🔥`;
   document.getElementById('reportText').textContent=text;
   document.getElementById('reportBox').style.display='block';
   renderStats();
 }
-
-function copyReport() {
-  const text=document.getElementById('reportText').textContent;
-  if(navigator.clipboard){ navigator.clipboard.writeText(text).then(()=>alert('کپی شد ✅')); }
-  else { const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); alert('کپی شد ✅'); }
+function copyReport(){
+  const t=document.getElementById('reportText').textContent;
+  if(navigator.clipboard){navigator.clipboard.writeText(t).then(()=>alert('کپی شد ✅'));}
+  else{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('کپی شد ✅');}
 }
 
-// ── EXPORT / IMPORT ───────────────────────────────────────
-function exportData() {
-  const exportObj = {
-    version: 2,
-    exportDate: new Date().toISOString(),
-    exportDateJalali: dateToJalali(new Date()).str,
-    startDate: data.startDate,
-    logs: data.logs,
-    notes: data.notes,
-    stats: {
-      totalDays: getDayCount(),
-      currentStreak: getStreak(),
-      totalHabits: TOTAL,
-    }
-  };
-  const blob=new Blob([JSON.stringify(exportObj,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  const j=dateToJalali(new Date());
-  a.href=url;
-  a.download=`backup-${j.y}-${String(j.m).padStart(2,'0')}-${String(j.d).padStart(2,'0')}.json`;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+function exportData(){
+  const obj={version:4,app:'qarar',exportDate:new Date().toISOString(),exportDateJalali:dtJ(new Date()).str,startDate:data.startDate,logs:data.logs,notes:data.notes,states:data.states,stats:{totalDays:dayCount(),streak:gStreak(),stable:HDEFS.filter(h=>data.states[h.id]==='stable').length}};
+  const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  const j=dtJ(new Date());
+  a.href=url;a.download=`apex-${j.y}-${String(j.m).padStart(2,'0')}-${String(j.d).padStart(2,'0')}.json`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
 }
-
-function importData(e) {
-  const file=e.target.files[0]; if(!file) return;
+function importData(e){
+  const file=e.target.files[0];if(!file)return;
   const reader=new FileReader();
   reader.onload=ev=>{
-    try {
-      const imported=JSON.parse(ev.target.result);
-      if(!imported.logs || !imported.startDate) throw new Error('فرمت نامعتبر');
-      const choice=confirm(
-        `فایل پشتیبان یافت شد:\nشروع: ${imported.startDate}\nتعداد روزهای ثبت‌شده: ${Object.keys(imported.logs).length}\n\nآیا می‌خواهی جایگزین داده‌های فعلی شود؟`
-      );
-      if(choice){
-        data={ startDate:imported.startDate, logs:imported.logs, notes:imported.notes||{} };
-        save(); init(); alert('داده‌ها با موفقیت بازیابی شد ✅');
+    try{
+      const imp=JSON.parse(ev.target.result);
+      if(!imp.logs||!imp.startDate)throw new Error('فرمت نامعتبر');
+      if(confirm(`بازیابی از: ${imp.exportDateJalali||imp.startDate}\nروزهای ثبت‌شده: ${Object.keys(imp.logs).length}\nجایگزین داده‌های فعلی شود؟`)){
+        data={startDate:imp.startDate,logs:imp.logs,notes:imp.notes||{},states:imp.states||{}};
+        es();sv();init();alert('بازیابی موفق ✅');
       }
-    } catch(err){ alert('خطا در خواندن فایل: '+err.message); }
+    }catch(err){alert('خطا: '+err.message);}
     e.target.value='';
   };
   reader.readAsText(file);
 }
 
-// ── TABS ──────────────────────────────────────────────────
-function switchTab(tabId,tabBtn,navId){
+function switchTab(tabId,btn,navId){
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+tabId).classList.add('active');
-  if(tabBtn) tabBtn.classList.add('active');
-  if(navId) document.getElementById(navId).classList.add('active');
-  if(tabId==='history') renderHistory();
-  if(tabId==='report') renderStats();
+  if(btn)btn.classList.add('active');
+  if(navId)document.getElementById(navId).classList.add('active');
+  if(tabId==='history')renderHistory();
+  if(tabId==='report')renderStats();
 }
 
-// ── RESET ─────────────────────────────────────────────────
 function resetData(){
   if(confirm('تمام داده‌ها پاک می‌شود. مطمئنی؟')){
-    data={startDate:todayKey(),logs:{},notes:{}};
-    save(); init(); alert('ریست شد ✅');
+    data={startDate:tk(),logs:{},notes:{},states:defStates()};sv();init();alert('ریست شد ✅');
   }
 }
 
-// ── PWA INSTALL ───────────────────────────────────────────
-let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault(); deferredPrompt=e;
-  document.getElementById('installBanner').style.display='flex';
-});
-function installApp(){
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(()=>{
-    deferredPrompt=null;
-    document.getElementById('installBanner').style.display='none';
-  });
-}
+let dP=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dP=e;document.getElementById('installBanner').style.display='flex';});
+function installApp(){if(!dP)return;dP.prompt();dP.userChoice.then(()=>{dP=null;document.getElementById('installBanner').style.display='none';});}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{});}
 
-// ── SERVICE WORKER ────────────────────────────────────────
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('/sw.js').catch(()=>{});
-}
-
-// ── INIT ──────────────────────────────────────────────────
 function init(){
-  data=loadData();
-  updateHeader(); renderHabits(); loadNote();
+  data=ld();es();updateHeader();renderHabits();loadNote();
   document.getElementById('mantraBox').textContent='💡 '+MANTRAS[0];
 }
 
-// ── BOOT ──────────────────────────────────────────────────
 initAuth();
-if(sessionStorage.getItem('ge_auth')==='1' && localStorage.getItem('ge_h')){
-  showApp();
-}
-
-setInterval(()=>{
-  mantraIdx=(mantraIdx+1)%MANTRAS.length;
-  const el=document.getElementById('mantraBox');
-  if(el) el.textContent='💡 '+MANTRAS[mantraIdx];
-},5000);
+if(sessionStorage.getItem('ge_a')==='1'&&localStorage.getItem('ge_h'))showApp();
+setInterval(()=>{mi=(mi+1)%MANTRAS.length;const el=document.getElementById('mantraBox');if(el)el.textContent='💡 '+MANTRAS[mi];},5000);
 </script>
 </body>
 </html>
