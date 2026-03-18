@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#7c3aed">
+<title>برنامه روزانه</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  background:linear-gradient(135deg,#0a0a0f 0%,#120a1f 50%,#0a0a0f 100%);
+  color:#e8e0f0;
+  font-family:'Vazirmatn','Tahoma',sans-serif;
+  direction:rtl;min-height:100vh;max-width:480px;margin:0 auto;padding-bottom:80px;
+}
+
+/* AUTH */
+#authScreen{
+  position:fixed;inset:0;background:#0a0a0f;z-index:999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;
+}
+.auth-logo{font-size:64px;margin-bottom:24px}
+.auth-title{font-size:22px;font-weight:800;color:#c084fc;margin-bottom:8px}
+.auth-sub{font-size:13px;color:#7a6a9a;margin-bottom:32px;text-align:center}
+.auth-input{
+  width:100%;padding:14px 16px;border-radius:12px;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(150,80,255,0.3);
+  color:#e8e0f0;font-size:16px;font-family:inherit;direction:ltr;text-align:center;
+  margin-bottom:12px;outline:none;
+}
+.auth-input:focus{border-color:#c084fc}
+.auth-btn{
+  width:100%;padding:14px;border-radius:12px;border:none;
+  background:linear-gradient(135deg,#7c3aed,#c084fc);
+  color:white;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;
+}
+.auth-err{font-size:12px;color:#f87171;margin-bottom:12px;min-height:18px}
+
+/* HEADER */
+.header{
+  padding:24px 20px 16px;
+  background:linear-gradient(180deg,rgba(120,40,200,0.15) 0%,transparent 100%);
+  border-bottom:1px solid rgba(150,80,255,0.15);
+}
+.header-top{display:flex;justify-content:space-between;align-items:center}
+.day-label{font-size:13px;color:#9b7fc7;margin-bottom:2px}
+.day-count{font-size:28px;font-weight:800;color:#c084fc}
+.streak-box{text-align:center}
+.streak-icon{font-size:36px;line-height:1}
+.streak-label{font-size:13px;color:#f59e0b;margin-top:2px}
+.progress-wrap{margin-top:16px}
+.progress-info{display:flex;justify-content:space-between;font-size:12px;color:#9b7fc7;margin-bottom:6px}
+.progress-bar{height:6px;background:rgba(150,80,255,0.15);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#c084fc);border-radius:3px;transition:width 0.5s}
+.mantra-box{
+  margin-top:16px;padding:10px 14px;background:rgba(120,40,200,0.1);
+  border-radius:10px;border:1px solid rgba(150,80,255,0.2);
+  font-size:13px;color:#d4b8f0;line-height:1.7;min-height:46px;
+}
+
+/* TABS */
+.tabs{display:flex;padding:0 20px;gap:8px;margin:16px 0 8px}
+.tab-btn{
+  flex:1;padding:8px 0;border-radius:8px;border:none;cursor:pointer;
+  font-size:13px;font-weight:600;font-family:inherit;transition:all 0.2s;
+}
+.tab-btn.active{background:rgba(120,40,200,0.4);color:#c084fc}
+.tab-btn:not(.active){background:rgba(255,255,255,0.05);color:#7a6a9a}
+
+/* CONTENT */
+.content{padding:0 20px}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.phase-label{font-size:12px;font-weight:700;margin-bottom:8px;opacity:0.8}
+.phase-group{margin-bottom:20px}
+
+.habit-item{
+  display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:8px;
+  border-radius:12px;cursor:pointer;transition:all 0.2s;user-select:none;
+  border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);
+}
+.habit-item.done{background:rgba(120,40,200,0.2);border-color:rgba(192,132,252,0.4)}
+.habit-icon{font-size:20px;min-width:24px;text-align:center}
+.habit-label{flex:1;font-size:13px;color:#9b8ab0;line-height:1.4}
+.habit-item.done .habit-label{color:#e8d5ff}
+.habit-check{
+  width:24px;height:24px;border-radius:6px;border:2px solid rgba(255,255,255,0.2);
+  background:transparent;display:flex;align-items:center;justify-content:center;
+  font-size:14px;transition:all 0.2s;color:white;flex-shrink:0;
+}
+.habit-item.done .habit-check{border-color:#c084fc;background:#c084fc}
+
+.note-label{font-size:12px;color:#9b7fc7;font-weight:700;margin-bottom:8px}
+textarea{
+  width:100%;min-height:80px;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;
+  color:#e8e0f0;font-size:13px;line-height:1.8;resize:vertical;
+  font-family:inherit;direction:rtl;outline:none;
+}
+
+.alert-box{
+  padding:14px;border-radius:12px;margin:16px 0;
+  background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);
+}
+.alert-title{font-size:13px;font-weight:700;color:#f87171;margin-bottom:8px}
+.alert-steps{font-size:12px;color:#9b8ab0;line-height:2}
+
+/* HISTORY */
+.history-item{
+  display:flex;align-items:center;gap:12px;padding:10px 14px;margin-bottom:6px;
+  border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
+}
+.history-item.today{background:rgba(120,40,200,0.15);border-color:rgba(192,132,252,0.3)}
+.history-date{font-size:12px;color:#7a6a9a;min-width:75px}
+.history-bar{flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+.history-fill{height:100%;border-radius:2px}
+.history-count{font-size:12px;color:#9b7fc7;min-width:30px;text-align:left}
+
+/* REPORT */
+.big-btn{
+  width:100%;padding:14px;background:linear-gradient(135deg,#7c3aed,#c084fc);
+  border:none;border-radius:12px;color:white;font-size:15px;font-weight:700;
+  cursor:pointer;margin-bottom:12px;font-family:inherit;
+}
+.sec-btn{
+  width:100%;padding:11px;background:rgba(120,40,200,0.15);
+  border:1px solid rgba(192,132,252,0.3);border-radius:12px;color:#c084fc;
+  font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px;font-family:inherit;
+}
+.report-box{
+  padding:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+  border-radius:12px;margin-bottom:16px;display:none;
+}
+.report-text{font-size:12px;color:#d4b8f0;line-height:1.8;white-space:pre-wrap;font-family:inherit}
+.copy-btn{
+  margin-top:12px;width:100%;padding:10px;background:rgba(120,40,200,0.3);
+  border:1px solid rgba(192,132,252,0.4);border-radius:8px;color:#c084fc;
+  font-size:13px;cursor:pointer;font-family:inherit;
+}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-card{
+  padding:12px 14px;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);border-radius:10px;text-align:center;
+}
+.stat-value{font-size:20px;font-weight:800;color:#c084fc}
+.stat-label{font-size:11px;color:#7a6a9a;margin-top:2px}
+.danger-btn{
+  width:100%;padding:10px;background:transparent;border:1px solid rgba(239,68,68,0.3);
+  border-radius:10px;color:#f87171;font-size:12px;cursor:pointer;font-family:inherit;margin-top:8px;
+}
+.section-title{font-size:13px;color:#9b7fc7;margin-bottom:16px}
+.io-row{display:flex;gap:8px;margin-bottom:8px}
+.io-row .sec-btn{margin-bottom:0}
+.divider{height:1px;background:rgba(255,255,255,0.06);margin:16px 0}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;background:rgba(10,10,15,0.97);
+  border-top:1px solid rgba(150,80,255,0.15);display:flex;padding:8px 0;
+}
+.nav-btn{
+  flex:1;background:transparent;border:none;cursor:pointer;
+  padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.nav-icon{font-size:20px}
+.nav-label{font-size:10px;color:#4a3a6a}
+.nav-btn.active .nav-label{color:#c084fc}
+
+#installBanner{
+  display:none;margin:12px 20px 0;padding:12px 14px;
+  background:rgba(124,58,237,0.15);border:1px solid rgba(192,132,252,0.3);
+  border-radius:12px;font-size:13px;color:#d4b8f0;align-items:center;gap:10px;
+}
+#installBanner button{
+  background:#7c3aed;border:none;border-radius:8px;color:white;
+  font-size:12px;padding:6px 12px;cursor:pointer;font-family:inherit;white-space:nowrap;
+}
+
+input[type=file]{display:none}
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen">
+  <div class="auth-logo">🔐</div>
+  <div class="auth-title" id="authTitle">ورود به برنامه</div>
+  <div class="auth-sub" id="authSub">رمز عبور خود را وارد کنید</div>
+  <div class="auth-err" id="authErr"></div>
+  <input class="auth-input" type="password" id="authInput" placeholder="رمز عبور" autocomplete="current-password">
+  <button class="auth-btn" onclick="doAuth()">ورود</button>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" style="display:none">
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="day-label">برنامه روزانه</div>
+      <div class="day-count" id="dayCount">روز ۱</div>
+    </div>
+    <div class="streak-box">
+      <div class="streak-icon">🔥</div>
+      <div class="streak-label" id="streakLabel">۰ روز</div>
+    </div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-info">
+      <span>پیشرفت امروز</span>
+      <span id="progressText">۰/۱۳</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div class="mantra-box" id="mantraBox">💡 ...</div>
+</div>
+
+<div id="installBanner">
+  <span style="flex:1">📲 نصب روی صفحه اصلی</span>
+  <button onclick="installApp()">نصب</button>
+  <button onclick="document.getElementById('installBanner').style.display='none'" style="background:transparent;color:#9b7fc7;border:none;cursor:pointer;font-size:16px">✕</button>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('today',this,'nav-today')">امروز</button>
+  <button class="tab-btn" onclick="switchTab('history',this,'nav-history')">تاریخچه</button>
+  <button class="tab-btn" onclick="switchTab('report',this,'nav-report')">گزارش</button>
+</div>
+
+<!-- TODAY -->
+<div class="content tab-content active" id="tab-today">
+
+  <div class="phase-group">
+    <div class="phase-label" style="color:#c084fc">فاز ۱ — هسته اصلی</div>
+    <div class="habit-item" id="h-alpha" onclick="toggle('alpha')">
+      <span class="habit-icon">🛡️</span>
+      <span class="habit-label">انضباط دیجیتال</span>
+      <div class="habit-check" id="c-alpha"></div>
+    </div>
+    <div class="habit-item" id="h-beta" onclick="toggle('beta')">
+      <span class="habit-icon">⚡</span>
+      <span class="habit-label">ذخیره انرژی</span>
+      <div class="habit-check" id="c-beta"></div>
+    </div>
+    <div class="habit-item" id="h-pr1" onclick="toggle('pr1')">
+      <span class="habit-icon">🌄</span>
+      <span class="habit-label">نماز صبح</span>
+      <div class="habit-check" id="c-pr1"></div>
+    </div>
+    <div class="habit-item" id="h-pr2" onclick="toggle('pr2')">
+      <span class="habit-icon">☀️</span>
+      <span class="habit-label">نماز ظهر</span>
+      <div class="habit-check" id="c-pr2"></div>
+    </div>
+    <div class="habit-item" id="h-pr3" onclick="toggle('pr3')">
+      <span class="habit-icon">🌤️</span>
+      <span class="habit-label">نماز عصر</span>
+      <div class="habit-check" id="c-pr3"></div>
+    </div>
+    <div class="habit-item" id="h-pr4" onclick="toggle('pr4')">
+      <span class="habit-icon">🌆</span>
+      <span class="habit-label">نماز مغرب</span>
+      <div class="habit-check" id="c-pr4"></div>
+    </div>
+    <div class="habit-item" id="h-pr5" onclick="toggle('pr5')">
+      <span class="habit-icon">🌙</span>
+      <span class="habit-label">نماز عشاء</span>
+      <div class="habit-check" id="c-pr5"></div>
+    </div>
+    <div class="habit-item" id="h-wudu" onclick="toggle('wudu')">
+      <span class="habit-icon">💧</span>
+      <span class="habit-label">تجدید وضو (حداقل ۳ بار در روز)</span>
+      <div class="habit-check" id="c-wudu"></div>
+    </div>
+    <div class="habit-item" id="h-panahi" onclick="toggle('panahi')">
+      <span class="habit-icon">🎧</span>
+      <span class="habit-label">پناهیان — حداقل ۱ جلسه کامل</span>
+      <div class="habit-check" id="c-panahi"></div>
+    </div>
+  </div>
+
+  <div class="phase-group">
+    <div class="phase-label" style="color:#60a5fa">فاز ۲ — از هفته سوم</div>
+    <div class="habit-item" id="h-sleep" onclick="toggle('sleep')">
+      <span class="habit-icon">😴</span>
+      <span class="habit-label">خوابیدن ساعت ثابت</span>
+      <div class="habit-check" id="c-sleep"></div>
+    </div>
+    <div class="habit-item" id="h-wakeup" onclick="toggle('wakeup')">
+      <span class="habit-icon">🌅</span>
+      <span class="habit-label">بیدار شدن ساعت ثابت</span>
+      <div class="habit-check" id="c-wakeup"></div>
+    </div>
+    <div class="habit-item" id="h-pushup" onclick="toggle('pushup')">
+      <span class="habit-icon">💪</span>
+      <span class="habit-label">پوش‌آپ صبح — ۲۰ تکرار</span>
+      <div class="habit-check" id="c-pushup"></div>
+    </div>
+  </div>
+
+  <div class="phase-group">
+    <div class="phase-label" style="color:#34d399">فاز ۳ — از ماه دوم</div>
+    <div class="habit-item" id="h-walk" onclick="toggle('walk')">
+      <span class="habit-icon">🚶</span>
+      <span class="habit-label">پیاده‌روی — حداقل ۱۵ دقیقه</span>
+      <div class="habit-check" id="c-walk"></div>
+    </div>
+  </div>
+
+  <div class="note-label">📝 یادداشت امروز</div>
+  <textarea id="noteArea" placeholder="هر چیزی که می‌خوای بنویس..." oninput="saveNote()"></textarea>
+
+  <div class="alert-box">
+    <div class="alert-title">🚨 در لحظه سخت؟</div>
+    <div class="alert-steps">
+      ۱. بلند شو از جات همین الان<br>
+      ۲. برو یه جای دیگه<br>
+      ۳. ۲۰ تا پوش‌آپ یا آب سرد رو صورت<br>
+      ۴. ۱۵ دقیقه صبر کن — این حال رد می‌شه
+    </div>
+  </div>
+
+</div>
+
+<!-- HISTORY -->
+<div class="content tab-content" id="tab-history">
+  <div class="section-title">۳۰ روز اخیر</div>
+  <div id="historyList"></div>
+</div>
+
+<!-- REPORT -->
+<div class="content tab-content" id="tab-report">
+  <div class="section-title">گزارش و مدیریت داده</div>
+
+  <div class="stats-grid" id="statsGrid"></div>
+
+  <button class="big-btn" onclick="generateReport()">📊 تولید گزارش هفتگی</button>
+  <div class="report-box" id="reportBox">
+    <div class="report-text" id="reportText"></div>
+    <button class="copy-btn" onclick="copyReport()">📋 کپی گزارش</button>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-title">📦 پشتیبان‌گیری و بازیابی</div>
+
+  <button class="sec-btn" onclick="exportData()">⬇️ خروجی کامل (Export)</button>
+  <button class="sec-btn" onclick="document.getElementById('importFile').click()">⬆️ بارگذاری پشتیبان (Import)</button>
+  <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+
+  <div class="divider"></div>
+  <div class="section-title">⚙️ تنظیمات</div>
+  <button class="sec-btn" onclick="changePwd()">🔑 تغییر رمز عبور</button>
+  <button class="danger-btn" onclick="resetData()">🔄 شروع مجدد از صفر</button>
+</div>
+
+</div><!-- end app -->
+
+<div class="bottom-nav" id="bottomNav" style="display:none">
+  <button class="nav-btn active" id="nav-today" onclick="switchTab('today',null,'nav-today')">
+    <span class="nav-icon">✅</span><span class="nav-label">امروز</span>
+  </button>
+  <button class="nav-btn" id="nav-history" onclick="switchTab('history',null,'nav-history')">
+    <span class="nav-icon">📅</span><span class="nav-label">تاریخچه</span>
+  </button>
+  <button class="nav-btn" id="nav-report" onclick="switchTab('report',null,'nav-report')">
+    <span class="nav-icon">📊</span><span class="nav-label">گزارش</span>
+  </button>
+</div>
+
+<script>
+// ── HABITS ──────────────────────────────────────────────
+const HABITS = ['alpha','beta','pr1','pr2','pr3','pr4','pr5','wudu','panahi','sleep','wakeup','pushup','walk'];
+const TOTAL = HABITS.length;
+
+// ── PERSIAN NUMBERS ─────────────────────────────────────
+const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+
+// ── JALALI CONVERSION ───────────────────────────────────
+function toJalali(gy, gm, gd) {
+  const jdm = [31,31,31,31,31,31,30,30,30,30,30,29];
+  let jy = gy - 1600; gy -= 1600; gd -= 1;
+  let gDN = 365*gy + Math.floor((gy+3)/4) - Math.floor((gy+99)/100) + Math.floor((gy+399)/400);
+  for (let i=0; i<gm-1; i++) gDN += [31,28,31,30,31,30,31,31,30,31,30,31][i];
+  if (gm>2 && ((gy+1600)%4===0 && ((gy+1600)%100!==0 || (gy+1600)%400===0))) gDN++;
+  gDN += gd;
+  let jDN = gDN - 79;
+  let jnp = Math.floor(jDN/12053); jDN %= 12053;
+  jy = 979 + 33*jnp + 4*Math.floor(jDN/1461);
+  jDN %= 1461;
+  if (jDN >= 366) { jy += Math.floor((jDN-1)/365); jDN = (jDN-1)%365; }
+  let jm = 0;
+  for (let i=0; i<11 && jDN>=jdm[i]; i++) { jDN -= jdm[i]; jm++; }
+  return { y: jy, m: jm+1, d: jDN+1 };
+}
+const JMONTHS = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+
+function dateToJalali(dateObj) {
+  const j = toJalali(dateObj.getFullYear(), dateObj.getMonth()+1, dateObj.getDate());
+  return { ...j, str: `${fa(j.d)} ${JMONTHS[j.m-1]} ${fa(j.y)}`, short: `${fa(j.d)}/${fa(j.m)}` };
+}
+
+function todayKey() { return new Date().toISOString().split('T')[0]; }
+
+// ── MANTRAS ─────────────────────────────────────────────
+const MANTRAS = [
+  "اتفاق‌های ناخواسته شکست نیستن. روز ادامه داره.",
+  "بین فکر و عمل مکث کن. برخیز.",
+  "مغزت ظرفیت داره. فقط زیرساختش رو بساز.",
+  "اون دوره طلایی یه توهم نبود. یه نسخه واقعی از توئه.",
+  "انگیزه موج داره. سیستم تو رو نگه می‌داره.",
+  "قبل از هر چیز دیگه، بلند شو از جات.",
+  "۱۵ دقیقه صبر کن. این حال رد می‌شه.",
+  "هر روزی که پایدار موندی، یه مسیر عصبی جدید ساختی.",
+  "تو قبلاً یک سال تموم موفق شدی. این رو می‌دونی.",
+];
+let mantraIdx = 0;
+
+// ── AUTH ─────────────────────────────────────────────────
+function simpleHash(s) {
+  let h = 0;
+  for (let i=0; i<s.length; i++) h = (Math.imul(31,h)+s.charCodeAt(i))|0;
+  return String(h>>>0);
+}
+
+function initAuth() {
+  const stored = localStorage.getItem('ge_h');
+  if (!stored) {
+    // First time — set password
+    document.getElementById('authTitle').textContent = 'تنظیم رمز عبور';
+    document.getElementById('authSub').textContent = 'یک رمز عبور برای خودت بساز';
+    document.getElementById('authInput').placeholder = 'رمز جدید';
+    document.getElementById('authInput').setAttribute('data-mode','set');
+  }
+  document.getElementById('authInput').addEventListener('keydown', e => { if(e.key==='Enter') doAuth(); });
+}
+
+function doAuth() {
+  const input = document.getElementById('authInput');
+  const val = input.value.trim();
+  const err = document.getElementById('authErr');
+  if (!val) { err.textContent = 'رمز عبور نمی‌تواند خالی باشد'; return; }
+  const mode = input.getAttribute('data-mode');
+  const stored = localStorage.getItem('ge_h');
+  if (!stored || mode==='set') {
+    if (val.length < 4) { err.textContent = 'رمز باید حداقل ۴ کاراکتر باشد'; return; }
+    localStorage.setItem('ge_h', simpleHash(val));
+    sessionStorage.setItem('ge_auth','1');
+    showApp();
+  } else {
+    if (simpleHash(val) === stored) {
+      sessionStorage.setItem('ge_auth','1');
+      showApp();
+    } else {
+      err.textContent = 'رمز عبور اشتباه است';
+      input.value = '';
+    }
+  }
+}
+
+function showApp() {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('bottomNav').style.display = 'flex';
+  init();
+}
+
+function changePwd() {
+  const np = prompt('رمز عبور جدید:');
+  if (!np || np.trim().length < 4) { alert('رمز باید حداقل ۴ کاراکتر باشد'); return; }
+  const cp = prompt('تأیید رمز جدید:');
+  if (np !== cp) { alert('رمزها یکسان نیستند'); return; }
+  localStorage.setItem('ge_h', simpleHash(np.trim()));
+  alert('رمز عبور تغییر کرد ✅');
+}
+
+// ── DATA ─────────────────────────────────────────────────
+function loadData() {
+  try { const r = localStorage.getItem('ge_d2'); if(r) return JSON.parse(r); } catch(e){}
+  return { startDate: todayKey(), logs:{}, notes:{} };
+}
+function save() { try { localStorage.setItem('ge_d2', JSON.stringify(data)); } catch(e){} }
+let data = loadData();
+
+// ── STATS ─────────────────────────────────────────────────
+function getDayCount() { return Math.floor((new Date()-new Date(data.startDate))/86400000)+1; }
+
+function getStreak() {
+  let s=0;
+  for (let i=0; i<365; i++) {
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const log=data.logs[d.toISOString().split('T')[0]]||{};
+    if (log['alpha'] && log['beta']) s++; else break;
+  }
+  return s;
+}
+
+function getTodayDone() {
+  const log=data.logs[todayKey()]||{};
+  return HABITS.filter(h=>log[h]).length;
+}
+
+// ── HEADER ────────────────────────────────────────────────
+function updateHeader() {
+  const done=getTodayDone(), pct=Math.round((done/TOTAL)*100);
+  document.getElementById('dayCount').textContent='روز '+fa(getDayCount());
+  document.getElementById('streakLabel').textContent=fa(getStreak())+' روز';
+  document.getElementById('progressText').textContent=fa(done)+'/'+fa(TOTAL);
+  document.getElementById('progressFill').style.width=pct+'%';
+}
+
+// ── HABITS ────────────────────────────────────────────────
+function toggle(id) {
+  const t=todayKey();
+  if(!data.logs[t]) data.logs[t]={};
+  data.logs[t][id]=!data.logs[t][id];
+  save(); renderHabits(); updateHeader();
+}
+
+function renderHabits() {
+  const log=data.logs[todayKey()]||{};
+  HABITS.forEach(id=>{
+    const item=document.getElementById('h-'+id);
+    const check=document.getElementById('c-'+id);
+    if(!item) return;
+    if(log[id]){ item.classList.add('done'); check.textContent='✓'; }
+    else { item.classList.remove('done'); check.textContent=''; }
+  });
+}
+
+function saveNote() {
+  data.notes[todayKey()]=document.getElementById('noteArea').value; save();
+}
+function loadNote() {
+  document.getElementById('noteArea').value=data.notes[todayKey()]||'';
+}
+
+// ── HISTORY ───────────────────────────────────────────────
+function renderHistory() {
+  const today=todayKey(); let html='';
+  for(let i=0; i<30; i++) {
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const key=d.toISOString().split('T')[0];
+    const log=data.logs[key]||{};
+    const done=HABITS.filter(h=>log[h]).length;
+    const pct=Math.round((done/TOTAL)*100);
+    const fill=pct===100?'#c084fc':pct>60?'#7c3aed':pct>30?'#4a3080':'#2a1a40';
+    const j=dateToJalali(d);
+    const noteIcon=data.notes[key]?'📝':'';
+    html+=`<div class="history-item ${key===today?'today':''}">
+      <span class="history-date">${j.short}</span>
+      <div class="history-bar"><div class="history-fill" style="width:${pct}%;background:${fill}"></div></div>
+      <span class="history-count">${fa(done)}/${fa(TOTAL)}</span>
+      <span style="font-size:10px">${noteIcon}</span>
+    </div>`;
+  }
+  document.getElementById('historyList').innerHTML=html;
+}
+
+// ── STATS GRID ────────────────────────────────────────────
+function renderStats() {
+  const sd=new Date(data.startDate);
+  const jsd=dateToJalali(sd);
+  document.getElementById('statsGrid').innerHTML=`
+    <div class="stat-card"><div class="stat-value" style="font-size:14px">${jsd.short}</div><div class="stat-label">روز شروع</div></div>
+    <div class="stat-card"><div class="stat-value">${fa(getDayCount())}</div><div class="stat-label">روز کلی</div></div>
+    <div class="stat-card"><div class="stat-value">${fa(getStreak())} 🔥</div><div class="stat-label">استریک فعلی</div></div>
+    <div class="stat-card"><div class="stat-value">${fa(getTodayDone())}/${fa(TOTAL)}</div><div class="stat-label">امروز</div></div>`;
+}
+
+// ── REPORT ────────────────────────────────────────────────
+function generateReport() {
+  let text=`📊 گزارش پیشرفت\n`;
+  const jToday=dateToJalali(new Date());
+  text+=`📅 تاریخ: ${jToday.str}\n`;
+  text+=`🗓 روز ${fa(getDayCount())} از شروع\n`;
+  text+=`🔥 استریک: ${fa(getStreak())} روز\n\n`;
+  text+=`هفته اخیر:\n${'─'.repeat(30)}\n`;
+  for(let i=0; i<7; i++){
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const key=d.toISOString().split('T')[0];
+    const log=data.logs[key]||{};
+    const done=HABITS.filter(h=>log[h]).length;
+    const j=dateToJalali(d);
+    const bar='█'.repeat(Math.round(done/TOTAL*10))+'░'.repeat(10-Math.round(done/TOTAL*10));
+    text+=`${j.short}: ${bar} ${fa(done)}/${fa(TOTAL)}\n`;
+    if(data.notes[key]) text+=`  📝 ${data.notes[key]}\n`;
+  }
+  text+=`${'─'.repeat(30)}\n💜 توسط تیم متخصص پشتیبانی می‌شم`;
+  document.getElementById('reportText').textContent=text;
+  document.getElementById('reportBox').style.display='block';
+  renderStats();
+}
+
+function copyReport() {
+  const text=document.getElementById('reportText').textContent;
+  if(navigator.clipboard){ navigator.clipboard.writeText(text).then(()=>alert('کپی شد ✅')); }
+  else { const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); alert('کپی شد ✅'); }
+}
+
+// ── EXPORT / IMPORT ───────────────────────────────────────
+function exportData() {
+  const exportObj = {
+    version: 2,
+    exportDate: new Date().toISOString(),
+    exportDateJalali: dateToJalali(new Date()).str,
+    startDate: data.startDate,
+    logs: data.logs,
+    notes: data.notes,
+    stats: {
+      totalDays: getDayCount(),
+      currentStreak: getStreak(),
+      totalHabits: TOTAL,
+    }
+  };
+  const blob=new Blob([JSON.stringify(exportObj,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const j=dateToJalali(new Date());
+  a.href=url;
+  a.download=`backup-${j.y}-${String(j.m).padStart(2,'0')}-${String(j.d).padStart(2,'0')}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importData(e) {
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try {
+      const imported=JSON.parse(ev.target.result);
+      if(!imported.logs || !imported.startDate) throw new Error('فرمت نامعتبر');
+      const choice=confirm(
+        `فایل پشتیبان یافت شد:\nشروع: ${imported.startDate}\nتعداد روزهای ثبت‌شده: ${Object.keys(imported.logs).length}\n\nآیا می‌خواهی جایگزین داده‌های فعلی شود؟`
+      );
+      if(choice){
+        data={ startDate:imported.startDate, logs:imported.logs, notes:imported.notes||{} };
+        save(); init(); alert('داده‌ها با موفقیت بازیابی شد ✅');
+      }
+    } catch(err){ alert('خطا در خواندن فایل: '+err.message); }
+    e.target.value='';
+  };
+  reader.readAsText(file);
+}
+
+// ── TABS ──────────────────────────────────────────────────
+function switchTab(tabId,tabBtn,navId){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tabId).classList.add('active');
+  if(tabBtn) tabBtn.classList.add('active');
+  if(navId) document.getElementById(navId).classList.add('active');
+  if(tabId==='history') renderHistory();
+  if(tabId==='report') renderStats();
+}
+
+// ── RESET ─────────────────────────────────────────────────
+function resetData(){
+  if(confirm('تمام داده‌ها پاک می‌شود. مطمئنی؟')){
+    data={startDate:todayKey(),logs:{},notes:{}};
+    save(); init(); alert('ریست شد ✅');
+  }
+}
+
+// ── PWA INSTALL ───────────────────────────────────────────
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferredPrompt=e;
+  document.getElementById('installBanner').style.display='flex';
+});
+function installApp(){
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(()=>{
+    deferredPrompt=null;
+    document.getElementById('installBanner').style.display='none';
+  });
+}
+
+// ── SERVICE WORKER ────────────────────────────────────────
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').catch(()=>{});
+}
+
+// ── INIT ──────────────────────────────────────────────────
+function init(){
+  data=loadData();
+  updateHeader(); renderHabits(); loadNote();
+  document.getElementById('mantraBox').textContent='💡 '+MANTRAS[0];
+}
+
+// ── BOOT ──────────────────────────────────────────────────
+initAuth();
+if(sessionStorage.getItem('ge_auth')==='1' && localStorage.getItem('ge_h')){
+  showApp();
+}
+
+setInterval(()=>{
+  mantraIdx=(mantraIdx+1)%MANTRAS.length;
+  const el=document.getElementById('mantraBox');
+  if(el) el.textContent='💡 '+MANTRAS[mantraIdx];
+},5000);
+</script>
+</body>
+</html>
