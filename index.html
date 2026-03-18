@@ -122,19 +122,18 @@ textarea:focus{border-color:var(--border-strong)}
 .nav-btn.active .nav-label{color:var(--text)}
 #installBanner{display:none;margin:12px 16px 0;padding:11px 13px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:12px;color:var(--text-muted);align-items:center;gap:10px;backdrop-filter:blur(8px);}
 #installBanner button{background:var(--text);border:none;border-radius:6px;color:#09090b;font-size:11px;font-weight:700;padding:5px 11px;cursor:pointer;font-family:inherit;white-space:nowrap;}
-.sleep-card{background:var(--surface);border:1px solid var(--blue-border);border-radius:var(--radius);padding:14px;backdrop-filter:blur(8px);}
-.sleep-row{display:flex;align-items:stretch;gap:0;margin-bottom:12px}
-.sleep-field{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.sleep-divider{width:1px;background:var(--border);margin:0 12px}
-.sleep-field-label{font-size:12px;color:var(--text-muted);font-weight:600}
-.sleep-input{background:rgba(255,255,255,0.05);border:1px solid var(--border-strong);border-radius:var(--radius-sm);color:var(--text);font-size:22px;font-weight:700;font-family:inherit;padding:6px 10px;outline:none;width:100%;text-align:center;direction:ltr;transition:border 0.2s;}
-.sleep-input:focus{border-color:rgba(255,255,255,0.3)}
-.sleep-field-sub{font-size:10px;color:var(--text-subtle);text-align:center}
-.sleep-duration{font-size:11px;color:var(--blue);text-align:center;padding:6px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:12px;min-height:28px;display:flex;align-items:center;justify-content:center;}
-.sleep-log-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.sleep-log-label{font-size:12px;color:var(--text-muted)}
-.sleep-check-btn{font-size:11px;padding:5px 10px;border-radius:var(--radius-sm);border:1px solid var(--border-strong);background:transparent;color:var(--text-muted);cursor:pointer;font-family:inherit;transition:all 0.15s;white-space:nowrap;}
-.sleep-check-btn.done{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.25);color:var(--text);}
+.sleep-card{background:var(--surface);border:1px solid var(--blue-border);border-radius:var(--radius);overflow:hidden;backdrop-filter:blur(8px);}
+.sleep-times{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:0;}
+.sleep-field{background:var(--bg);padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.sleep-field-label{font-size:10px;font-weight:700;color:var(--text-subtle);letter-spacing:1.5px;text-transform:uppercase;}
+.sleep-input{background:transparent;border:none;color:var(--text);font-size:26px;font-weight:800;font-family:inherit;outline:none;width:100%;text-align:center;direction:ltr;letter-spacing:2px;cursor:pointer;}
+.sleep-input:focus{color:var(--blue)}
+.sleep-field-sub{font-size:10px;color:var(--text-subtle);text-align:center;height:14px;}
+.sleep-footer{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--border);}
+.sleep-duration-text{font-size:11px;color:var(--blue);direction:rtl;}
+.sleep-checks{display:flex;gap:6px;}
+.sleep-check-btn{font-size:10px;padding:4px 10px;border-radius:20px;border:1px solid var(--border-strong);background:transparent;color:var(--text-subtle);cursor:pointer;font-family:inherit;transition:all 0.15s;white-space:nowrap;font-weight:600;}
+.sleep-check-btn.done{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);color:var(--text);}
 input[type=file]{display:none}
 </style>
 </head>
@@ -194,27 +193,25 @@ input[type=file]{display:none}
 
   <!-- SLEEP SCHEDULE -->
   <div id="sleepSection" style="display:none;margin-bottom:20px">
-    <div class="phase-label" style="color:#60a5fa">فاز ۲ — تنظیم خواب</div>
+    <div class="phase-label" style="color:var(--blue);margin-bottom:8px">فاز ۲ — تنظیم خواب</div>
     <div class="sleep-card">
-      <div class="sleep-row">
+      <div class="sleep-times">
         <div class="sleep-field">
-          <div class="sleep-field-label">😴 خوابیدن</div>
+          <div class="sleep-field-label">خوابیدن</div>
           <input type="time" id="sleepTime" class="sleep-input" onchange="saveSleepTime()">
-          <div class="sleep-field-sub" id="sleepSub">هدف تنظیم نشده</div>
+          <div class="sleep-field-sub" id="sleepSub"></div>
         </div>
-        <div class="sleep-divider"></div>
         <div class="sleep-field">
-          <div class="sleep-field-label">🌅 بیدار شدن</div>
+          <div class="sleep-field-label">بیدار شدن</div>
           <input type="time" id="wakeTime" class="sleep-input" onchange="saveSleepTime()">
-          <div class="sleep-field-sub" id="wakeSub">هدف تنظیم نشده</div>
+          <div class="sleep-field-sub" id="wakeSub"></div>
         </div>
       </div>
-      <div class="sleep-duration" id="sleepDuration"></div>
-      <div class="sleep-log-row">
-        <div class="sleep-log-label">امروز رعایت شد؟</div>
-        <div style="display:flex;gap:8px">
-          <button class="sleep-check-btn" id="btnSleepDone" onclick="toggleSleepLog('sleep')">خوابیدن ✓</button>
-          <button class="sleep-check-btn" id="btnWakeDone" onclick="toggleSleepLog('wakeup')">بیدار شدن ✓</button>
+      <div class="sleep-footer">
+        <div class="sleep-duration-text" id="sleepDuration">ساعت هدف را تنظیم کن</div>
+        <div class="sleep-checks">
+          <button class="sleep-check-btn" id="btnSleepDone" onclick="toggleSleepLog('sleep')">😴 خوابیدم</button>
+          <button class="sleep-check-btn" id="btnWakeDone" onclick="toggleSleepLog('wakeup')">🌅 بیدار شدم</button>
         </div>
       </div>
     </div>
@@ -505,10 +502,10 @@ function renderSleepSection(){
   const w=(data.sleep||{}).targetWake||'';
   document.getElementById('sleepTime').value=s;
   document.getElementById('wakeTime').value=w;
-  document.getElementById('sleepSub').textContent=s?`هدف: ${s}`:'هدف تنظیم نشده';
-  document.getElementById('wakeSub').textContent=w?`هدف: ${w}`:'هدف تنظیم نشده';
+  document.getElementById('sleepSub').textContent=s?'هدف: '+s:'';
+  document.getElementById('wakeSub').textContent=w?'هدف: '+w:'';
   const dur=calcDuration(s,w);
-  document.getElementById('sleepDuration').textContent=dur||'ساعت خواب و بیداری را تنظیم کن';
+  document.getElementById('sleepDuration').textContent=dur||'ساعت هدف را تنظیم کن';
   const log=data.logs[tk()]||{};
   document.getElementById('btnSleepDone').classList.toggle('done',!!log['sleep']);
   document.getElementById('btnWakeDone').classList.toggle('done',!!log['wakeup']);
