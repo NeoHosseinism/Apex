@@ -291,6 +291,7 @@ const HDEFS=[
 const PNAMES={1:'فاز ۱ — هسته اصلی',2:'فاز ۲ — از هفته سوم',3:'فاز ۳ — از ماه دوم'};
 const STABLE=21;
 const fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+let mi=0;
 
 function toJ(gy,gm,gd){
   const jdm=[31,31,31,31,31,31,30,30,30,30,30,29];
@@ -393,7 +394,7 @@ function todayDone(){const log=data.logs[tk()]||{};return activeH().filter(h=>lo
 
 function updateHeader(){
   const a=activeH().length+activeSleepCount();
-  const d=getTodayDone()+sleepDoneCount();
+  const d=todayDone()+sleepDoneCount();
   const pct=a>0?Math.round((d/a)*100):0;
   document.getElementById('dayCount').textContent='روز '+fa(dayCount());
   document.getElementById('streakLabel').textContent=fa(gStreak())+' روز';
